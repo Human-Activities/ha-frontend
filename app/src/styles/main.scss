@@ -25,3 +25,34 @@ html::-webkit-scrollbar-thumb:hover{
     width: 100vw;
     overflow: hidden;  
 }
+
+.ha-v-flexbox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    &.align-center {
+        align-items: center;
+    }
+    &.align-left {
+        align-items: flex-start;
+    }
+    &.align-right {
+        justify-content: flex-end;
+    }
+}
+
+.ha-h-flexbox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    &.align-center {
+        justify-content: center;
+    }
+    &.align-left {
+        justify-content: flex-start;
+    }
+    &.align-right {
+        justify-content: flex-end;
+    }
+}
+

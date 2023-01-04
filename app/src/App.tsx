@@ -9,7 +9,7 @@ const { Footer } = Layout;
 function App() {
 
   return (
-    <Layout className='ha-layout'>
+    <Layout className='ha-layout ha-v-flexbox'>
       <AppHeader/>
       <BrowserRouter>
         <Routes>
