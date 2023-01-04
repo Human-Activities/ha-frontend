@@ -1,0 +1,10 @@
+.form-item {
+    label {
+        width: 7em;
+    }
+    &.date {
+        label {
+            width: 11em;
+        }
+    }
+}
