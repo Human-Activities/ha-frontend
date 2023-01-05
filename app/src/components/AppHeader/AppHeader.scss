@@ -1,0 +1,12 @@
+@import '../../styles/variables.scss';
+
+.app-header {
+    background-color: $headerBackGroundColor !important;
+    width: 100%;
+    color: white !important;
+}
+
+.logo {
+    width: 100%;
+    text-align: left;
+}

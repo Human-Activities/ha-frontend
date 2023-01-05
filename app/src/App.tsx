@@ -2,6 +2,7 @@ import { Layout } from 'antd';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.scss';
 import { AppHeader } from './components';
+import { AppContextProvider } from './context';
 import { LoginPage, StartingPage } from './modules';
 
 const { Footer } = Layout;
@@ -9,16 +10,18 @@ const { Footer } = Layout;
 function App() {
 
   return (
-    <Layout className='ha-layout ha-v-flexbox'>
-      <AppHeader/>
-      <BrowserRouter>
-        <Routes>
-          <Route path='/' element={<StartingPage/>}/>
-          <Route path='login' element={<LoginPage/>}/>
-        </Routes>
-      </BrowserRouter>
-      <Footer>Test footera</Footer>
-    </Layout>
+    <BrowserRouter>
+      <AppContextProvider>
+        <Layout className='ha-layout ha-v-flexbox'>
+          <AppHeader/>
+            <Routes>
+              <Route path='/login' element={<LoginPage/>}/>
+              <Route path='/' element={<StartingPage/>}/>
+            </Routes>
+          <Footer>Test footera</Footer>
+        </Layout>
+      </AppContextProvider>
+    </BrowserRouter> 
   )
 }
 

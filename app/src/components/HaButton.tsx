@@ -9,6 +9,7 @@ type HaButtonProps = {
     label?: string
     children?: ReactNode;
     icon?: any;
+    style?: React.CSSProperties;
 }
 
 
@@ -19,7 +20,7 @@ const HaButton: React.FC<HaButtonProps> = (props: HaButtonProps) => {
             props.size == 'small' ? 'small' : 'middle'
         } 
         type={props.type || 'default'} 
-        style={{background: props.type === 'primary' || props.type === 'default' ? 'orange' : ''}} 
+        style={{...props.style,background: props.type === 'primary' || props.type === 'default' ? 'orange' : ''}} 
         onClick={props.onClick}
         htmlType={props.htmlType || 'button'}
         icon={props.icon}
