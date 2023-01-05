@@ -1,9 +1,11 @@
 import axios from "axios";
 
 export class AuthService {
-    static registerAccount(formData: any) {
+    static async registerAccount(formData: any) {
         try {
             const { data } = await axios.post('test', formData);
+        } catch (err) {
+            return;
         }
     }
 }
