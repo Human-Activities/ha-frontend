@@ -4,16 +4,18 @@ import { HaButton } from "..";
 import './AppHeader.scss'
 import { AppContext, AppContextType } from "../../context";
 import { StateConstants } from "../../model/utils";
+import { useNavigate } from "react-router-dom";
 
 const AppHeader: React.FC = () => {
     const {appData, setCurrentState} = React.useContext(AppContext) as AppContextType;
+    const navigate = useNavigate();
 
     const extendedMenu = () => {
         switch(appData.currentState) {
             case 'home':
                 const onLoginButton = () => {
                     setCurrentState(StateConstants.LOGIN);
-                    history.pushState({}, '', 'login');
+                    navigate("/login");
                 }
                 return [<HaButton key="loginBtn" size="large" type="primary" onClick={onLoginButton}>Start now</HaButton>];
             case 'panel':
