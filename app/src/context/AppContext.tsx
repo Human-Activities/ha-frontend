@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { PathManager, StateConstants } from "../model/utils";
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import { PathManager } from "../model/utils";
 export interface AppData {
     currentState: string;
     theme: string;
@@ -20,6 +21,13 @@ type AppContextProps = {
 const AppContext = React.createContext<AppContextType | null>(null);
 
 const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
+    const location = useLocation();
+
+    useEffect(() => {
+        const currentPath = PathManager.getCurrentStateByPath();
+        setCurrentState(currentPath);
+    }, [location.pathname]);
+    
     const [appData, setAppData] = useState<AppData>({
         currentState: PathManager.getCurrentStateByPath(),
         theme: 'light',
