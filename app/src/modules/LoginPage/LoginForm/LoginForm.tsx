@@ -32,7 +32,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
                 <Form.Item
                     className="form-item"
                     label="First name"
-                    name="firstName"
+                    name="name"
                 >
                     <Input id="inpFirstName"/>
                 </Form.Item>
@@ -46,7 +46,7 @@ const LoginForm: React.FC<LoginFormProps> = (props: LoginFormProps) => {
                 <Form.Item
                     className="form-item date"
                     label="Date of birth"
-                    name="birthday"
+                    name="dateOfBirth"
                 >
                     <DatePicker format={'DD/MM/YYYY'}/>
                 </Form.Item>
