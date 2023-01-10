@@ -4,6 +4,7 @@ import './App.scss';
 import { AppHeader } from './components';
 import { AppContextProvider } from './context';
 import { LoginPage, PanelPage, StartingPage } from './modules';
+import { ActivitiesPage } from './modules/ActivitiesPage/ActivitiesPage';
 
 const { Footer } = Layout;
 
@@ -17,6 +18,7 @@ function App() {
             <Routes>
               <Route path='/login' element={<LoginPage/>} />
               <Route path='/panel' element={<PanelPage/>} />
+              <Route path='/activities' element={<ActivitiesPage />} />
               <Route path='/' element={<StartingPage/>} />
             </Routes>
           <Footer>Test footera</Footer>

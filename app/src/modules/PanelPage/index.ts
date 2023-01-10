@@ -1,1 +1,1 @@
-export {default as PanelPage} from './PanelPage';
+export {PanelPage} from './PanelPage';
