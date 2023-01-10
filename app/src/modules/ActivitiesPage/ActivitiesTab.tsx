@@ -1,5 +1,4 @@
 import { Card } from "antd";
-import React from "react";
 
 // tempporary mock of Activity, declare in type.d.ts
 export type Activity = {
@@ -16,12 +15,19 @@ export type TabProps = {
 
 export const ActivitiesTab = ({ activities }: TabProps) => {
     return (
-        <Card style={{ width: '100%' }}>
+        <Card className="acticities-container-card">
             {activities.map((activity, i) => {
                 return (
-                    <Card key={i} title={activity.title} extra={<p>{activity.category}</p>} style={{ width: '50%'}}>
-                        <h3>{activity.description}</h3>
-                        {/* todo rest */}
+                    <Card 
+                        className="activity-card"
+                        headStyle={{background: "#f7f7f7", opacity: 0.8, textAlign: "left", paddingLeft: "10%"}}
+                        bodyStyle={{background: "rgba(255, 255, 255, 0.8)", textAlign: "left"}}
+                        key={i} 
+                        title={<span className="activity-card-title">{activity.title}</span>} 
+                        extra={<span className="activity-card-extra">{activity.category}</span>} 
+                    >
+                        <h3 className="activity-card-content">{activity.description}</h3>
+                        {/* todo rest, body may be ReactNode, so we can generate lists, bills, descriptions, pictures, etc */}
                     </Card>
                 )
             })}
