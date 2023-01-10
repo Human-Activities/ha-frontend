@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { PathManager, RequestStatus } from "../model/utils";
+import { notify, PathManager, RequestStatus } from "../model/utils";
 import axios from "axios";
 import { LoginTO, RegisterTO } from "../model/TOs";
 import { AuthService } from "../services";
@@ -70,9 +70,10 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     const register = useCallback(async (registerTO: RegisterTO) => {
         const {status, data, err} = await AuthService.registerAccount(registerTO);
         if (status === RequestStatus.SUCCESS) {
+            notify('success', 'Registered successfully', 'Account created successfully, login to start using the application')
             return { status };
         }
-        //TODO: Error handling
+        notify('error', 'Error', (err as any).message);
         return { status };
     },[]);
 
@@ -83,9 +84,10 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
             localStorage.setItem('refreshToken', data.refreshToken);
             axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
             setUserData(new UserData());
+            notify('success', 'Login successful', 'Successfully logged in');
             return { status }
         }
-        //TODO: Error handling
+        notify('error', 'Error', (err as any).message);
         return { status };
     }, []);
 

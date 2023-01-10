@@ -14,7 +14,7 @@ const LoginPage: React.FC = () => {
     const {register, login} = React.useContext(AppContext) as AppContextType;
 
     const onRegisterFinish = async (formData: any) => {
-        const dateOfBirth = DateUtils.clearTime((formData.dateOfBirth as Dayjs).toDate())
+        const dateOfBirth = DateUtils.clearTime((formData.dateOfBirth as Dayjs)?.toDate())
         const registerTO = {...formData, dateOfBirth: dateOfBirth} as RegisterTO;
         const { status } = await register(registerTO);
         if (status === RequestStatus.SUCCESS) {

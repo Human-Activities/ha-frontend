@@ -1,7 +1,6 @@
-@import '../../styles/variables.scss';
 
 .app-header {
-    background-color: $headerBackGroundColor !important;
+    background-color: var(--header-background-color) !important;
     width: 100%;
     color: white !important;
 }
