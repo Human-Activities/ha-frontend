@@ -1,16 +1,8 @@
-@import '../../styles/variables.scss';
+
 
 #sider {
-    background-color: $siderMenuColor;
+    background-color: var(--sider-menu-color);
     width: 100px !important;
     max-width: 100px !important;
     min-width: 100px !important;
-    &.sider-menu {
-        gap: 1.5em;
-        height: 100%;
-        &.sider-menu-item {
-            padding: 5px;
-            max-width: 50%;
-        }
-    }
 }
