@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Avatar, Layout, Menu, Tabs } from "antd";
+import { Tabs } from "antd";
 import { AppContext, AppContextType } from "../../context";
 import { PanelPage } from "../PanelPage";
 import { ActivitiesTab, Activity } from "./ActivitiesTab";
@@ -18,17 +18,17 @@ export const ActivitiesPage = () => {
             setSelectedTab("friends");
             setActivities([
                 {title: "Test 1", category: "Sport", description: "Nowy sport odkryty"},
-                {title: "Test 2", category: "Jedzenie", description: "Naleśniory"},
+                {title: "Test tytuł 2", category: "Jedzenie", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
                 {title: "Test 3", category: "Rozrywka", description: "Dance"},
-                {title: "Test 4", category: "Lista zadań", description: "Pora na wyzwanie"},
+                {title: "Tytuł 4", category: "Lista zadań", description: "Pora na wyzwanie"},
             ])
         } else {
             // fetch user activities
             setSelectedTab("yours");
             setActivities([
                 {title: "Test 5", category: "Sport", description: "Nowy sport odkryty"},
-                {title: "Test 6", category: "Rachunek", description: "Nowy rachunek"},
-                {title: "Test 7", category: "Rozrywka", description: "Dance"},
+                {title: "Tytuł testowy 6", category: "Rachunek", description: "Nowy rachunek"},
+                {title: "Długi tytuł dla testu karty 7", category: "Rozrywka", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
             ])
         }
     }
@@ -55,7 +55,8 @@ export const ActivitiesPage = () => {
             <h3 className="header">Activities Page</h3>
             <p>{"(Implementing)"}</p>
             <Tabs 
-                type="card" 
+                type="card"
+                tabBarStyle={{background: "#f5f5f5", margin: 0}}
                 items={defaultTabs} 
                 onTabClick={(key) => fetchActivities(key as ActivitiesType)} /> 
         </PanelPage>
