@@ -1,11 +1,14 @@
-import React from "react";
+import React, { ReactNode } from "react";
 import { Avatar, Layout, Menu } from "antd";
 import './PanelPage.scss';
 import { AppContext, AppContextType } from "../../context";
 
-const {Sider, Content} = Layout;
+type PanelProps = {
+    children?: ReactNode 
+}
 
-const PanelPage: React.FC = () => {
+export const PanelPage = ({ children }: PanelProps) => {
+    const {Sider, Content} = Layout;
     const {user} = React.useContext(AppContext) as AppContextType;
     console.log(user);
     return (
@@ -21,10 +24,8 @@ const PanelPage: React.FC = () => {
                 </Menu>
             </Sider>
             <Content style={{width: '100%'}}>
-                Test
+                {children || "Test (not implemented)"}
             </Content>
         </Layout>
     )
 }
-
-export default PanelPage;
