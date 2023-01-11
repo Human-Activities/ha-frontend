@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, CSSProperties } from "react";
 import { Avatar, Layout, Menu } from "antd";
 import './PanelPage.scss';
 import { AppContext, AppContextType } from "../../context";
@@ -7,14 +7,19 @@ type PanelProps = {
     children?: ReactNode 
 }
 
+const menuStyle = {
+    backgroundColor: 'var(--sider-menu-color)',
+    gap: '.25em',
+    
+} as CSSProperties;
+
 export const PanelPage = ({ children }: PanelProps) => {
-    const {Sider, Content} = Layout;
     const {user} = React.useContext(AppContext) as AppContextType;
     console.log(user);
     return (
-        <Layout style={{margin: 'auto', width: '100%'}}>
+        <Layout style={{width: '100%',height: '50em'}}>
             <Sider id="sider">
-                <Menu style={{backgroundColor: '#333333'}}className='sider-menu ha-v-flexbox'>
+                <Menu style={menuStyle} className='sider-menu ha-v-flexbox'>
                     <Menu.Item className="sider-menu-item">
                         <Avatar size={40} shape={'circle'}>+</Avatar>
                     </Menu.Item>
@@ -23,7 +28,7 @@ export const PanelPage = ({ children }: PanelProps) => {
                     </Menu.Item>
                 </Menu>
             </Sider>
-            <Content style={{width: '100%'}}>
+            <Content className="panel-content">
                 {children || "Test (not implemented)"}
             </Content>
         </Layout>
