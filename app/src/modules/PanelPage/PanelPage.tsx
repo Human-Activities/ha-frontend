@@ -12,6 +12,7 @@ const menuStyle = {
     gap: '.25em',
     
 } as CSSProperties;
+const { Sider, Content, Footer } = Layout;
 
 export const PanelPage = ({ children }: PanelProps) => {
     const {user} = React.useContext(AppContext) as AppContextType;

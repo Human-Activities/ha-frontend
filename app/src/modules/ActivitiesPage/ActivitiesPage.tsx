@@ -1,11 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Tabs } from "antd";
+import { Tabs, Layout } from "antd";
 import { AppContext, AppContextType } from "../../context";
 import { PanelPage } from "../PanelPage";
-import { ActivitiesTab, Activity } from "./ActivitiesTab";
+import { ActivitiesTab } from "./ActivitiesTab";
+import { HaButton } from "../../components";
+import { getActivities } from "../../services/activities";
+import { Activity } from "../../types";
+
 import "./ActivitiesPage.scss";
 
-type ActivitiesType = "friends" | "yours";
+type ActivitiesType = "friends" | "user";
+const { Header } = Layout;
 
 export const ActivitiesPage = () => {
     const {user} = React.useContext(AppContext) as AppContextType;
@@ -14,22 +19,15 @@ export const ActivitiesPage = () => {
 
     const fetchActivities = (key: ActivitiesType) => {
         if (key === "friends") {
-            // fetch friends activities
-            setSelectedTab("friends");
-            setActivities([
-                {title: "Test 1", category: "Sport", description: "Nowy sport odkryty"},
-                {title: "Test tytuł 2", category: "Jedzenie", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
-                {title: "Test 3", category: "Rozrywka", description: "Dance"},
-                {title: "Tytuł 4", category: "Lista zadań", description: "Pora na wyzwanie"},
-            ])
+            getActivities().then(response => {
+                setSelectedTab("friends");
+                setActivities(response)
+            });
         } else {
-            // fetch user activities
-            setSelectedTab("yours");
-            setActivities([
-                {title: "Test 5", category: "Sport", description: "Nowy sport odkryty"},
-                {title: "Tytuł testowy 6", category: "Rachunek", description: "Nowy rachunek"},
-                {title: "Długi tytuł dla testu karty 7", category: "Rozrywka", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
-            ])
+            getActivities(true).then(response => {
+                setSelectedTab("user");
+                setActivities(response)
+            });
         }
     }
 
@@ -42,7 +40,7 @@ export const ActivitiesPage = () => {
         {
             label: "Twoje aktywności",
             key: "yours",
-            children: <ActivitiesTab activities={selectedTab === "yours" ? activities : []}/>
+            children: <ActivitiesTab activities={selectedTab === "user" ? activities : []}/>
         }
     ]
 
@@ -52,8 +50,10 @@ export const ActivitiesPage = () => {
 
     return (
         <PanelPage>
-            <h3 className="header">Activities Page</h3>
-            <p>{"(Implementing)"}</p>
+            <Header className="activities-header">
+                <h3>Activities Page</h3>
+                <HaButton>Dodaj aktywność</HaButton>
+            </Header>
             <Tabs 
                 type="card"
                 tabBarStyle={{background: "#f5f5f5", margin: 0}}

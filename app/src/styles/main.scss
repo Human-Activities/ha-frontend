@@ -18,10 +18,9 @@ html::-webkit-scrollbar-thumb{
 html::-webkit-scrollbar-thumb:hover{
     background: #15151a
 }
-  
 
 .ha-layout {
-    min-height: 100vh;
+    height: 100vh;
     width: 100vw;
     overflow: hidden;  
 }

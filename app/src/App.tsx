@@ -21,7 +21,7 @@ function App() {
               <Route path='/activities' element={<ActivitiesPage />} />
               <Route path='/' element={<StartingPage/>} />
             </Routes>
-          <Footer>Test footera</Footer>
+          <Footer className='main-footer'>&copy; Human Activities</Footer>
         </Layout>
       </AppContextProvider>
     </BrowserRouter> 
