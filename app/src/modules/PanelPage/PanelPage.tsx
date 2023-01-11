@@ -15,7 +15,7 @@ const PanelPage: React.FC = () => {
     const {user} = React.useContext(AppContext) as AppContextType;
     console.log(user);
     return (
-        <Layout style={{margin: 'auto', width: '100%'}}>
+        <Layout style={{width: '100%',height: '50em'}}>
             <Sider id="sider">
                 <Menu style={menuStyle} className='sider-menu ha-v-flexbox'>
                     <Menu.Item className="sider-menu-item">
@@ -26,8 +26,8 @@ const PanelPage: React.FC = () => {
                     </Menu.Item>
                 </Menu>
             </Sider>
-            <Content style={{width: '100%'}}>
-                Test
+            <Content className="panel-content">
+
             </Content>
         </Layout>
     )
