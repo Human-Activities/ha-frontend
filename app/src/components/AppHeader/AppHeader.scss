@@ -8,4 +8,8 @@
 .logo {
     width: 100%;
     text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    white-space: nowrap;
 }

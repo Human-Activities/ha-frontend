@@ -1,8 +1,14 @@
 #sider {
     background-color: var(--sider-menu-color);
-    width: 100px !important;
-    max-width: 100px !important;
-    min-width: 100px !important;
+    min-width: calc(40px + 2em) !important;
+    width: calc(40px + 2em) !important;
+    max-width: calc(40px + 2em) !important;
+    &.expanded {
+        min-width: calc(40px + 11em) !important;
+        width: calc(40px + 11em) !important;
+        max-width: calc(40px + 11em) !important;
+    }
+    transition: width 250ms ease-in-out;
 }
 
 .panel-content {
