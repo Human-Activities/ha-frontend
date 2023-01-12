@@ -2,8 +2,8 @@ import React, { CSSProperties, useEffect, useState } from "react";
 import { Layout } from "antd";
 import './PanelPage.scss';
 import { AppContext, AppContextType } from "../../context";
-import { HaMenu } from "../../components";
-import { MenuItem, SubMenuLink } from "../../model/utils";
+import { HaMenu, HaModal } from "../../components";
+import { MenuItem, SubMenuLink, useModal } from "../../model/utils";
 import { useNavigate } from "react-router-dom";
 
 const {Sider, Content} = Layout;
@@ -11,10 +11,12 @@ const {Sider, Content} = Layout;
 
 const PanelPage: React.FC = () => {
     const {user} = React.useContext(AppContext) as AppContextType;
+    const [addGroupModalOpen, showAddGroupModal, closeAddgroupModal, addgroupModalProps] = useModal('Create new group');
     const [expanded, setExpanded] = useState(false);
     const navigate = useNavigate();
     
     const onExpand = (value: boolean) => setExpanded(value);
+    const testOverride = () => console.log('testOverride');
 
     const generateSubMenuForGroup = (groupId: string | number): SubMenuLink[] => {
         return [
@@ -44,7 +46,7 @@ const PanelPage: React.FC = () => {
             key: 3, name: "Grupa Test Trzy Trzy", submenuList: generateSubMenuForGroup(3)
         },
         {
-            key: 4, name: '+', tooltipText: 'Create a new group'
+            key: 4, name: '+', tooltipText: 'Create a new group', click: () => showAddGroupModal()
         }
     ]
     return (
@@ -54,6 +56,9 @@ const PanelPage: React.FC = () => {
             </Sider>
             <Content className="panel-content">
             </Content>
+            <HaModal {...addgroupModalProps} open={addGroupModalOpen}>
+                Test
+            </HaModal>
         </Layout>
     )
 }

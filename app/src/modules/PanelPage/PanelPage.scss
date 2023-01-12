@@ -4,9 +4,9 @@
     width: calc(40px + 2em) !important;
     max-width: calc(40px + 2em) !important;
     &.expanded {
-        min-width: calc(40px + 11em) !important;
-        width: calc(40px + 11em) !important;
-        max-width: calc(40px + 11em) !important;
+        min-width: calc(40px + 12em) !important;
+        width: calc(40px + 12em) !important;
+        max-width: calc(40px + 12em) !important;
     }
     transition: width 250ms ease-in-out;
 }
