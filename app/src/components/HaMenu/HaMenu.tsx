@@ -96,7 +96,7 @@ export const HaMenu = ({ provider, onExpand, defaultSelected, mode }: HaMenuProp
             (
             <div className="ha-v-flexbox align-center sublink-menu" 
                 style={subMenuMounted ? {'animation':'inAnimation 250ms ease-in'} : {'animation': 'outAnimation 250ms ease-out'}}
-                onAnimationEnd={()=> { if(!subMenuMounted) setSubMenuVisible(false); }}>
+                onAnimationEndCapture={(event)=> { if(!subMenuMounted) { event.currentTarget.style.display = 'none'; setSubMenuVisible(false); }}}>
                 <Tooltip placement="right" title={selectedItem.tooltipText || selectedItem.name}>
                     <label className="sublink-label">{selectedItem.name}</label>
                 </Tooltip>    
