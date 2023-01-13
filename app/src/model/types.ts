@@ -5,6 +5,6 @@ export type Activity = {
     description: string;
     author: string;
     createdDate?: Date;
-    isCurrentUserAuthor: boolean;
+    isCurrentUserAuthor: boolean; // todo: userId
     isPrivate: boolean;
 }

@@ -16,10 +16,11 @@
 
 .acticities-container-card {
     width: 100%;
-    padding: 2% 4%;
-
+    
     .activity-card {
-        max-width: 60%;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 50em;
         margin-bottom: 20px;
         font-size: 12px;
 
@@ -30,7 +31,7 @@
     
             .activity-card-author {
                 padding: 0 10px;
-                border-left: 1px solid #999;
+                border-left: 1px solid var(--color-grey);
             }
 
             &.current-user-author {
@@ -43,7 +44,7 @@
         .activity-card-category {
             text-align: right;
             padding: 2px 10px;
-            border-bottom: 1px solid #d3d3d3;
+            border-bottom: 1px solid var(--color-light-grey);
             margin-bottom: 14px;
         }
     }

@@ -1,4 +1,4 @@
-import { Activity } from "../types";
+import { Activity } from "../model/types";
 
 export async function getActivities(onlyForCurrentUser?: boolean): Promise<Activity[]> {
     //todo fetch function
@@ -22,4 +22,20 @@ export async function getActivities(onlyForCurrentUser?: boolean): Promise<Activ
         {id: 3, title: "Długi tytuł dla testu karty 7", category: "Rozrywka", isCurrentUserAuthor: true, isPrivate: false, author: "Pepe Oh Boi", description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."},
 
     ]
+}
+
+export async function getGroupActivities(groupId: number) {
+    return Promise.resolve("not implemented");
+}
+
+export async function createActivity(activity: Activity) {
+    return Promise.resolve("not implemented");
+}
+
+export async function updateActivity(activity: Activity) {
+    return Promise.resolve("not implemented");
+}
+
+export async function deleteActivity(activityId: number) {
+    return Promise.resolve("not implemented");
 }

@@ -4,8 +4,8 @@ import { AppContext, AppContextType } from "../../context";
 import { PanelPage } from "../PanelPage";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { HaButton } from "../../components";
-import { getActivities } from "../../services/activities";
-import { Activity } from "../../types";
+import { getActivities } from "../../services";
+import { Activity } from "../../model/types";
 
 import "./ActivitiesPage.scss";
 
@@ -52,7 +52,7 @@ export const ActivitiesPage = () => {
         <PanelPage>
             <Header className="activities-header">
                 <h3>Activities Page</h3>
-                <HaButton>Dodaj aktywność</HaButton>
+                <HaButton>Add activity</HaButton>
             </Header>
             <Tabs 
                 type="card"

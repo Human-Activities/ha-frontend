@@ -1,14 +1,17 @@
 import { Card } from "antd";
-import { Activity } from "../../types";
+import { Activity } from "../../model/types";
 import cx from "classnames";
 import { HaButton } from "../../components";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";
+import { useContext } from "react";
+import { AppContext, AppContextType } from "../../context";
 
 export type TabProps = {
     activities: Activity[];
 }
 
 export const ActivitiesTab = ({ activities }: TabProps) => {
+    const { user } = useContext(AppContext) as AppContextType;
     return (
         <Card className="acticities-container-card">
             {activities.map((activity, i) => {
@@ -19,7 +22,7 @@ export const ActivitiesTab = ({ activities }: TabProps) => {
                         bodyStyle={{background: "rgba(255, 255, 255, 0.8)", textAlign: "left"}}
                         key={i} 
                         title={<ActivityHeader {...activity} />} 
-                        extra={activity.isCurrentUserAuthor && <ActivityBtnGroup activity={activity} />} 
+                        extra={activity.isCurrentUserAuthor  && <ActivityBtnGroup activity={activity} />} 
                     >
                         <h3 className="activity-card-category">{activity.category}</h3>
                         <p className="activity-card-description">{activity.description}</p>
@@ -42,9 +45,9 @@ const ActivityHeader = ({title, author, isCurrentUserAuthor}: Activity) => {
 
 const ActivityBtnGroup = ({ activity }: {activity: Activity}) => {
     return (
-        <div>
-            <HaButton icon={<FaRegEdit />}></HaButton>
-            <HaButton icon={<FaRegTrashAlt />}></HaButton>
+        <div className="ha-btn-group">
+            <HaButton variant="positive" icon={<FaRegEdit />}></HaButton>
+            <HaButton variant="negative" icon={<FaRegTrashAlt />}></HaButton>
         </div>
     )
 }

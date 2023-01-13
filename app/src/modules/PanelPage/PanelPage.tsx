@@ -60,7 +60,7 @@ export const PanelPage = ({ children }: PanelProps) => {
     return (
         <Layout style={{width: '100%',height: '50em'}}>
             <Sider id="sider" className={`ha-v-flexbox ${expanded ? 'expanded' : ''}`}>
-                <HaMenu provider={menuProvider} defaultSelected={menuProvider[0]} onExpand={onExpand}/>
+                <HaMenu provider={menuProvider} onExpand={onExpand}/>
             </Sider>
             <Content className="panel-content">
                 {children || "Test (not implemented)"}
