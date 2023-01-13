@@ -7,25 +7,22 @@ import './HaMenu.scss';
 
 type HaMenuProps = {
     provider: MenuItem[];
-    defaultSelected?: MenuItem
     mode?: 'horizontal' | 'vertical'
     onExpand?: (value: boolean) => void;
 }
 
-export const HaMenu = ({ provider, onExpand, defaultSelected, mode }: HaMenuProps) => {
+export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
 
-    const [selectedItem, setSelectedItem] = useState<MenuItem>((defaultSelected ? Object.assign(defaultSelected, {active: true}) : {}) as MenuItem);
+    const [selectedItem, setSelectedItem] = useState<MenuItem>(provider.length > 0 ? provider[0] as MenuItem : {} as MenuItem);
     const [dataProvider, setDataProvider] = useState<MenuItem[]>(provider);
     const [subMenuVisible, setSubMenuVisible] = useState(false);
     const [subMenuMounted, setSubMenuMounted] = useState(false);
 
     const navigate = useNavigate();
 
-    useEffect(() =>{
-        if (defaultSelected && defaultSelected.click){
-            defaultSelected.click();
-        }
-    }, [])
+    useEffect(() => {
+        setDataProvider(provider);
+    }, [provider])
 
     const onMenuMainItemClick = (menuItem: MenuItem) => {
         if (menuItem.key !== selectedItem.key) {
@@ -84,7 +81,7 @@ export const HaMenu = ({ provider, onExpand, defaultSelected, mode }: HaMenuProp
                         const shortcut = StringUtils.generateShortcutString(mi.name);
                         return (
                             <Tooltip key={ mi.key } placement="right" title={ mi.tooltipText || mi.name }>
-                                <Avatar className="menu-avatar" size={ 40 } shape={ 'circle' } style={{ verticalAlign:'middle', border: mi.active ? 'solid 1px lightblue' : ''}} onClick={() => onMenuMainItemClick(mi)}>
+                                <Avatar className="menu-avatar" size={ 40 } shape={ 'circle' } style={{ verticalAlign:'middle', border: mi.active ? 'solid 1px lightblue' : 'inherit', backgroundColor: mi.active ? 'var(--menu-avatar-hover-bg-color)' : ''}} onClick={() => onMenuMainItemClick(mi)}>
                                     {shortcut}
                                 </Avatar>
                             </Tooltip>
