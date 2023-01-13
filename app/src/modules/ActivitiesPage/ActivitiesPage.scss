@@ -1,0 +1,51 @@
+.activities-header {
+    background-color: transparent !important;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 4rem 2rem 2rem;
+
+    h3 {
+        color: black;
+        width: 100%;
+        text-align: left;
+        padding: 10px;
+    }
+}
+
+.acticities-container-card {
+    width: 100%;
+    
+    .activity-card {
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 50em;
+        margin-bottom: 20px;
+        font-size: 12px;
+
+        .activity-card-header {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+    
+            .activity-card-author {
+                padding: 0 10px;
+                border-left: 1px solid var(--color-grey);
+            }
+
+            &.current-user-author {
+                .activity-card-author {
+                    display: none;
+                }
+            }
+        }
+
+        .activity-card-category {
+            text-align: right;
+            padding: 2px 10px;
+            border-bottom: 1px solid var(--color-light-grey);
+            margin-bottom: 14px;
+        }
+    }
+}

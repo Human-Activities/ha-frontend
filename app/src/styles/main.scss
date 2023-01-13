@@ -17,7 +17,6 @@ html::-webkit-scrollbar-thumb{
 html::-webkit-scrollbar-thumb:hover{
     background: var(--scrollbar-thumb-hover)
 }
-  
 
 .ha-layout {
     height: 100vh;
@@ -55,3 +54,9 @@ html::-webkit-scrollbar-thumb:hover{
     }
 }
 
+.ha-btn-group {
+    display: flex;
+    gap: 0.5em;
+    width: 100%;
+    max-height: 40px;
+}

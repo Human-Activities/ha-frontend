@@ -1,5 +1,5 @@
-import React, { CSSProperties, useEffect, useState } from "react";
-import { Layout } from "antd";
+import React, { ReactNode, CSSProperties, useEffect, useState } from "react";
+import { Avatar, Layout, Menu } from "antd";
 import './PanelPage.scss';
 import { AppContext, AppContextType } from "../../context";
 import { HaMenu, HaModal } from "../../components";
@@ -10,10 +10,18 @@ import { useForm } from "antd/es/form/Form";
 import { GroupTO } from "../../model/TOs";
 import { GroupService } from "../../services";
 
-const {Sider, Content} = Layout;
+type PanelProps = {
+    children?: ReactNode 
+}
 
+const menuStyle = {
+    backgroundColor: 'var(--sider-menu-color)',
+    gap: '.25em',
+    
+} as CSSProperties;
+const { Sider, Content, Footer } = Layout;
 
-const PanelPage: React.FC = () => {
+export const PanelPage = ({ children }: PanelProps) => {
     const [expanded, setExpanded] = useState(false);
     const [menuProvider, setMenuProvider] = useState<MenuItem[]>(MenuUtils.generateMenuProviderForPanel([], () => showAddGroupModal()));
     const [refresh, setRefresh] = useState(false);
@@ -53,6 +61,7 @@ const PanelPage: React.FC = () => {
                 <HaMenu provider={menuProvider} onExpand={onExpand}/>
             </Sider>
             <Content className="panel-content">
+                {children || "Test (not implemented)"}
             </Content>
             <HaModal {...addgroupModalProps} open={addGroupModalOpen}>
                 <CreateGroupForm form={groupFormInstance}/>
@@ -60,5 +69,3 @@ const PanelPage: React.FC = () => {
         </Layout>
     )
 }
-
-export default PanelPage;
