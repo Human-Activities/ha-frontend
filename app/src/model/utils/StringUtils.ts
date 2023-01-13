@@ -20,5 +20,11 @@ export class StringUtils {
             default:
                 return text.substring(0, 4); //jak więcej to słów to defaultowo bierzemy po prostu 4 litery pierwszego słowa    
         }
-    } 
+    }
+    
+    public static capitalizeFirst(text: string) {
+        if (text == null) return '';
+        text = text.replace(text.charAt(0),text.charAt(0).toUpperCase());
+        return text;
+    }
 }

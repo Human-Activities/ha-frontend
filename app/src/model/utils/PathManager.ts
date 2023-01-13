@@ -1,4 +1,4 @@
-import { StateConstants } from "./StateConstants";
+import { StateConstants } from "./Constants";
 
 export class PathManager {
     static getCurrentStateByPath(): StateConstants {

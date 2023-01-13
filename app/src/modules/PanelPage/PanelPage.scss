@@ -1,5 +1,5 @@
 #sider {
-    background-color: var(--sider-menu-color);
+    background-color: var(--sider-menu-bg-color);
     min-width: calc(40px + 2em) !important;
     width: calc(40px + 2em) !important;
     max-width: calc(40px + 2em) !important;
@@ -20,14 +20,14 @@
 }
 
 .panel-content::-webkit-scrollbar-track{
-    box-shadow: inset 0 0 40px 5px rgb(20, 20, 20);
+    box-shadow: inset 0 0 40px 5px var(--scrollbar-box-shadow);
 }
 
 .panel-content::-webkit-scrollbar-thumb{
-    background: #1f2020;
+    background: var(--scrollbar-thumb);
     border-radius: 20px;
 }
 
 .panel-content::-webkit-scrollbar-thumb:hover{
-    background: #3f3f41
+    background: var(--scrollbar-thumb-hover);
 }
