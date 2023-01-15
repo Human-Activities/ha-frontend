@@ -13,6 +13,10 @@
     gap: .5em;
 }
 
+.menu-avatar {
+    user-select: none;
+}
+
 .menu-avatar:hover {
     background-color: var(--menu-avatar-hover-bg-color);
 }
@@ -37,11 +41,7 @@
     justify-content: flex-start;
     width: 10em;
     max-width: 10em;
-}
-
-.sublink-menu > * {
-    visibility: inherit;
-    opacity: inherit;
+    color: white;
 }
 
 @keyframes inAnimation {
