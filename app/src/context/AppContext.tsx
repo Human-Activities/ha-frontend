@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { notify, PathManager, RequestStatus } from "../model/utils";
 import axios from "axios";
-import { LoginTO, RegisterTO } from "../model/TOs";
+import { Login, Register } from "../model/types.api";
 import { AuthService } from "../services";
 export interface AppData {
     currentState: string;
@@ -22,8 +22,8 @@ export type AppContextType = {
     setCurrentState: (value: string) => void;
     setTheme: (value: string) => void;
     setLocale: (value: string) => void;
-    register: (registerTO: RegisterTO) => Promise<{status: RequestStatus}>;
-    login: (loginTO: LoginTO) => Promise<{status: RequestStatus}>;
+    register: (registerTO: Register) => Promise<{status: RequestStatus}>;
+    login: (loginTO: Login) => Promise<{status: RequestStatus}>;
 }
 
 type AppContextProps = {
@@ -67,7 +67,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         setAppData((prev)=> ({...prev, locale: value}));
     }
 
-    const register = useCallback(async (registerTO: RegisterTO) => {
+    const register = useCallback(async (registerTO: Register) => {
         const {status, data, err} = await AuthService.registerAccount(registerTO);
         if (status === RequestStatus.SUCCESS) {
             notify('success', 'Registered successfully', 'Account created successfully, login to start using the application')
@@ -77,7 +77,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         return { status };
     },[]);
 
-    const login = useCallback(async (loginTO: LoginTO) => {
+    const login = useCallback(async (loginTO: Login) => {
         const { status, data, err } = await AuthService.login(loginTO);
         if (status === RequestStatus.SUCCESS) {
             localStorage.setItem('accessToken', data.accessToken);

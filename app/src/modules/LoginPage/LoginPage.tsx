@@ -3,7 +3,7 @@ import {Dayjs} from "dayjs";
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext, AppContextType } from "../../context";
-import { LoginTO, RegisterTO } from "../../model/TOs";
+import { Login, Register } from "../../model/types.api";
 import { DateUtils, RequestStatus } from "../../model/utils";
 import LoginForm from "./LoginForm";
 import './LoginPage.scss';
@@ -15,14 +15,14 @@ const LoginPage: React.FC = () => {
 
     const onRegisterFinish = async (formData: any) => {
         const dateOfBirth = DateUtils.clearTime((formData.dateOfBirth as Dayjs)?.toDate())
-        const registerTO = {...formData, dateOfBirth: dateOfBirth} as RegisterTO;
+        const registerTO = {...formData, dateOfBirth: dateOfBirth} as Register;
         const { status } = await register(registerTO);
         if (status === RequestStatus.SUCCESS) {
             setActiveKey('login');
         }
     }
 
-    const onLoginFinish = async (formData: LoginTO) => {
+    const onLoginFinish = async (formData: Login) => {
         const { status } = await login(formData);
         if (status === RequestStatus.SUCCESS) {
             navigate('/panel');
