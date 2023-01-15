@@ -1,7 +1,6 @@
 import React from "react";
-import { Checkbox, Form, Input } from "antd"
+import { Checkbox, Form, FormInstance, Input } from "antd"
 import { HaSelect, HaTooltipIcon } from "../../../components";
-import { FormProps } from "../../../model/types.app";
 
 export type CreateActivityValues = {
     name: string;
@@ -11,7 +10,7 @@ export type CreateActivityValues = {
 }
 
 type CreateActivityFormProps = {
-    form: FormProps<CreateActivityValues>;
+    form: FormInstance<CreateActivityValues>;
     isGroupActivity?: boolean;
 }
 
