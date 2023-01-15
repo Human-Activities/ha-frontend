@@ -7,7 +7,7 @@ import { MenuItem, MenuUtils, ModalFormParams, notify, RequestStatus, SubMenuLin
 import { useNavigate } from "react-router-dom";
 import { CreateGroupForm } from "../GroupPage";
 import { useForm } from "antd/es/form/Form";
-import { GroupTO } from "../../model/TOs";
+import { Group } from "../../model/types.api";
 import { GroupService } from "../../services";
 
 type PanelProps = {
@@ -23,7 +23,7 @@ export const PanelPage = ({ children }: PanelProps) => {
     const [groupFormInstance] = useForm();
     const {user} = React.useContext(AppContext) as AppContextType;
 
-    const onCreateGroup = async(value: GroupTO) => {
+    const onCreateGroup = async(value: Group) => {
         const {status,data} = await GroupService.create(value);
         if (status === RequestStatus.SUCCESS) {
             const {message} = data;
@@ -37,14 +37,14 @@ export const PanelPage = ({ children }: PanelProps) => {
         isOpen: addGroupModalOpen, 
         open: showAddGroupModal, 
         close: closeAddGroupModal, 
-        props: addgroupModalProps} = useModal('Create new group', 'small', {instance: groupFormInstance, onFetch: onCreateGroup} as ModalFormParams<GroupTO>);
+        props: addgroupModalProps} = useModal('Create new group', 'small', {instance: groupFormInstance, onFetch: onCreateGroup} as ModalFormParams<Group>);
     
     const onExpand = (value: boolean) => setExpanded(value);
     
     const getGroups = async() => {
         const {status, data, error} = await GroupService.getGroups();
         if (status === RequestStatus.SUCCESS) {
-            setMenuProvider(MenuUtils.generateMenuProviderForPanel(data as GroupTO[], () => showAddGroupModal()));
+            setMenuProvider(MenuUtils.generateMenuProviderForPanel(data as Group[], () => showAddGroupModal()));
         }
     }
 
