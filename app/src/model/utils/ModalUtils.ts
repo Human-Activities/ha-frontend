@@ -1,24 +1,33 @@
 import { FormInstance } from "antd";
 import { useCallback, useState } from "react";
-import { HaModalProps } from "../../components";
+import { HaModalProps } from "../../components/HaModal";
+import { ModalVariant } from "../../components/HaModal/HaModal";
 
 export type ModalFormParams<T> = {
-    instance : FormInstance<any>,
+    instance : FormInstance<T>,
     onFetch: (value: T) => void;
 }
 
+export type ModalState = {
+    isOpen: boolean;
+    open: () => void;
+    close: () => void;
+    props: HaModalProps;
+    fetcher?: () => any;
+}
+
 export const useModal = (
-    title: string, 
-    size: 'large' | 'default' | 'small' = 'default', 
+    title?: string, 
+    variant?: ModalVariant,
     form?: ModalFormParams<any>, 
     spinner?: boolean
-    ): [boolean, () => void, ()=> void, HaModalProps, (() => any)?] => 
+    ): ModalState => 
     {
         const [isModalOpen, setModalOpen] = useState(false);
 
         const modalProps: HaModalProps = {
             title: title, 
-            width: size === 'large' ? 850 : size === 'small' ?  300 : 600, 
+            variant: variant || 'small',
             onCancel: () => closeModal(),
             onOk: () => { if (form != null) fetchFormValues() },
             loading: spinner,
@@ -46,8 +55,8 @@ export const useModal = (
         }
 
     if (form != null) {    
-        return [isModalOpen, showModal, closeModal, modalProps, fetchFormValues];
+        return {isOpen: isModalOpen, open: showModal, close: closeModal, props: modalProps, fetcher: fetchFormValues};
     } else {
-        return [isModalOpen, showModal, closeModal, modalProps];
+        return {isOpen: isModalOpen, open: showModal, close: closeModal, props: modalProps};
     }
 }

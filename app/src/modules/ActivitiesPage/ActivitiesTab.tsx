@@ -1,5 +1,5 @@
 import { Card } from "antd";
-import { Activity } from "../../model/types";
+import { Activity } from "../../model/types.api";
 import cx from "classnames";
 import { HaButton } from "../../components";
 import { FaRegTrashAlt, FaRegEdit } from "react-icons/fa";

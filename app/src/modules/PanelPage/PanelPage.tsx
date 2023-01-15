@@ -1,5 +1,5 @@
 import React, { ReactNode, CSSProperties, useEffect, useState } from "react";
-import { Avatar, Layout, Menu } from "antd";
+import { Layout } from "antd";
 import './PanelPage.scss';
 import { AppContext, AppContextType } from "../../context";
 import { HaMenu, HaModal } from "../../components";
@@ -23,24 +23,26 @@ const { Sider, Content, Footer } = Layout;
 
 export const PanelPage = ({ children }: PanelProps) => {
     const [expanded, setExpanded] = useState(false);
-    const [menuProvider, setMenuProvider] = useState<MenuItem[]>(MenuUtils.generateMenuProviderForPanel([], () => showAddGroupModal()));
-    const [refresh, setRefresh] = useState(false);
+    const menuItems = MenuUtils.generateMenuProviderForPanel([], () => showAddGroupModal());
+    const [menuProvider, setMenuProvider] = useState<MenuItem[]>(menuItems);
     const [groupFormInstance] = useForm();
     const {user} = React.useContext(AppContext) as AppContextType;
+
     const onCreateGroup = async(value: GroupTO) => {
         const {status,data} = await GroupService.create(value);
         if (status === RequestStatus.SUCCESS) {
             const {message} = data;
             closeAddGroupModal();
-            setRefresh(!refresh);
+            getGroups();
             notify('success', 'Creation successful', message);
         }
     }
-    const [
-        addGroupModalOpen, 
-        showAddGroupModal, 
-        closeAddGroupModal, 
-        addgroupModalProps] = useModal('Create new group', 'small', {instance: groupFormInstance, onFetch: onCreateGroup} as ModalFormParams<GroupTO>);
+
+    const {
+        isOpen: addGroupModalOpen, 
+        open: showAddGroupModal, 
+        close: closeAddGroupModal, 
+        props: addgroupModalProps} = useModal('Create new group', 'small', {instance: groupFormInstance, onFetch: onCreateGroup} as ModalFormParams<GroupTO>);
     
     const onExpand = (value: boolean) => setExpanded(value);
     
@@ -53,7 +55,7 @@ export const PanelPage = ({ children }: PanelProps) => {
 
     useEffect(() => {
         getGroups();
-    }, [refresh]);
+    }, []);
 
     return (
         <Layout style={{width: '100%',height: '50em'}}>
@@ -63,7 +65,7 @@ export const PanelPage = ({ children }: PanelProps) => {
             <Content className="panel-content">
                 {children || "Test (not implemented)"}
             </Content>
-            <HaModal {...addgroupModalProps} open={addGroupModalOpen}>
+            <HaModal title={""} {...addgroupModalProps} open={addGroupModalOpen}>
                 <CreateGroupForm form={groupFormInstance}/>
             </HaModal>
         </Layout>

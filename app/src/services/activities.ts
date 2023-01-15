@@ -1,4 +1,4 @@
-import { Activity } from "../model/types";
+import { Activity } from "../model/types.api";
 
 export async function getActivities(onlyForCurrentUser?: boolean): Promise<Activity[]> {
     //todo fetch function

@@ -1,10 +1,7 @@
 import { Form, FormInstance, Input } from "antd"
+import { FormProps } from "../../../model/types.app"
 
-export type CreateGroupFormProps = {
-    form?: FormInstance<any>;
-}
-
-export const CreateGroupForm = ({form}: CreateGroupFormProps) => {
+export const CreateGroupForm = ({form}: FormProps<any>) => {
     return (
         <Form form={form} style={{height: '6em'}}>
             <Form.Item

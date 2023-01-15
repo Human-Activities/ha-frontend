@@ -5,7 +5,8 @@ import { PanelPage } from "../PanelPage";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { HaButton } from "../../components";
 import { getActivities } from "../../services";
-import { Activity } from "../../model/types";
+import { CreateActivityModal, useCreateActivityModal } from "./CreateActivity";
+import { Activity } from "../../model/types.api";
 
 import "./ActivitiesPage.scss";
 
@@ -16,6 +17,7 @@ export const ActivitiesPage = () => {
     const {user} = React.useContext(AppContext) as AppContextType;
     const [activities, setActivities] = useState<Activity[]>([]);
     const [selectedTab, setSelectedTab] = useState<ActivitiesType>("friends");
+    const { modal, form } = useCreateActivityModal();
 
     const fetchActivities = (key: ActivitiesType) => {
         if (key === "friends") {
@@ -52,13 +54,14 @@ export const ActivitiesPage = () => {
         <PanelPage>
             <Header className="activities-header">
                 <h3>Activities Page</h3>
-                <HaButton>Add activity</HaButton>
+                <HaButton onClick={() => modal.open()}>Add activity</HaButton>
             </Header>
             <Tabs 
                 type="card"
                 tabBarStyle={{background: "#f5f5f5", margin: 0}}
                 items={defaultTabs} 
                 onTabClick={(key) => fetchActivities(key as ActivitiesType)} /> 
+            <CreateActivityModal key="createModal" modal={modal} form={form} />
         </PanelPage>
     )
 }
