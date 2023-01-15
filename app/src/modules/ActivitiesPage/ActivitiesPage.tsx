@@ -61,7 +61,7 @@ export const ActivitiesPage = () => {
                 tabBarStyle={{background: "#f5f5f5", margin: 0}}
                 items={defaultTabs} 
                 onTabClick={(key) => fetchActivities(key as ActivitiesType)} /> 
-            <CreateActivityModal key="createModal" modal={modal} form={form} />
+            <CreateActivityModal key="createModal" formModal={{ modal, form}}/>
         </PanelPage>
     )
 }
