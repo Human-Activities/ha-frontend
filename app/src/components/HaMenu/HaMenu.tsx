@@ -100,7 +100,7 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
                 <nav>
                     {
                         selectedItem.submenuList.map(si => {
-                            return <HaButton key={si.key} type="text" style={{color: 'white'}} onClick={()=> navigate(si.path)}>{si.name}</HaButton>
+                            return <HaButton key={si.key} type="text" style={{color: '#FFF'}} onClick={()=> navigate(si.path)}>{si.name}</HaButton>
                         })
                     }
                 </nav>

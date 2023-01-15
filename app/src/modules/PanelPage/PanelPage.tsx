@@ -14,11 +14,6 @@ type PanelProps = {
     children?: ReactNode 
 }
 
-const menuStyle = {
-    backgroundColor: 'var(--sider-menu-color)',
-    gap: '.25em',
-    
-} as CSSProperties;
 const { Sider, Content, Footer } = Layout;
 
 export const PanelPage = ({ children }: PanelProps) => {
