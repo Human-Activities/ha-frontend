@@ -1,15 +1,20 @@
-import { FormInstance } from "antd"
+import React from "react"
 import { useForm } from "antd/es/form/Form"
 import { HaModal } from "../../../components"
 import { FormModalInstance } from "../../../model/types.app"
-import { ModalState, useModal } from "../../../model/utils"
+import { useModal } from "../../../model/utils"
 import { CreateActivityForm, CreateActivityValues } from "./CreateActivityForm"
 
+type CreateActivityProps = {
+    formModal: FormModalInstance<CreateActivityValues>;
+    isGroupActivity?: boolean;
+}
 
 export const useCreateActivityModal = (): FormModalInstance<CreateActivityValues> => {
     const [createActivityForm] = useForm<CreateActivityValues>();
 
     const createActivity = (values: CreateActivityValues) => {
+        console.log(values)
         modal.close();
     }
 
@@ -17,11 +22,11 @@ export const useCreateActivityModal = (): FormModalInstance<CreateActivityValues
     return { modal: modal, form: createActivityForm}
 }
 
-export const CreateActivityModal = ({modal, form}: FormModalInstance<CreateActivityValues>) => {
-    const { isOpen, props } = modal;
+export const CreateActivityModal = ({formModal, isGroupActivity}: CreateActivityProps) => {
+    const { modal: { isOpen, props }, form } = formModal;
     return(
         <HaModal {...props} open={isOpen} >
-            <CreateActivityForm form={form} />
+            <CreateActivityForm form={form} isGroupActivity={isGroupActivity} />
         </HaModal>
     )
 }
