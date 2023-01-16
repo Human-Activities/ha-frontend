@@ -2,20 +2,21 @@
 @import './overrides.scss';
 @import './variables.scss';
 
-html::-webkit-scrollbar{
-    width: 12px;
+.ha-scroll::-webkit-scrollbar{
+    width: 1em;
 }
 
-html::-webkit-scrollbar-track{
-   box-shadow: inset 0 0 40px 5px var(--scrollbar-box-shadow);
+.ha-scroll::-webkit-scrollbar-track{
+    box-shadow: inset 0 0 40px 5px var(--scrollbar-box-shadow);
 }
 
-html::-webkit-scrollbar-thumb{
-    background: var(--scrollbar-thumb)
+.ha-scroll::-webkit-scrollbar-thumb{
+    background: var(--scrollbar-thumb);
+    border-radius: 20px;
 }
 
-html::-webkit-scrollbar-thumb:hover{
-    background: var(--scrollbar-thumb-hover)
+.ha-scroll::-webkit-scrollbar-thumb:hover{
+    background: var(--scrollbar-thumb-hover);
 }
 
 .ha-layout {

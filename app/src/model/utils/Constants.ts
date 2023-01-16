@@ -10,6 +10,6 @@ export enum RequestStatus {
 }
 
 export const PanelSubMenu = [
-    'activities', 'events', 'settlements'
+    'activities', 'todo-lists', 'settlements', 'events'
 ]
 

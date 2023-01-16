@@ -57,7 +57,7 @@ export const PanelPage = ({ children }: PanelProps) => {
             <Sider id="sider" className={`ha-v-flexbox ${expanded ? 'expanded' : ''}`}>
                 <HaMenu provider={menuProvider} onExpand={onExpand}/>
             </Sider>
-            <Content className="panel-content">
+            <Content className="panel-content ha-scroll">
                 {children || "Test (not implemented)"}
             </Content>
             <HaModal title={""} {...addgroupModalProps} open={addGroupModalOpen}>

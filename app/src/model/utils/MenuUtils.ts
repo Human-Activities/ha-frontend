@@ -6,6 +6,7 @@ export type SubMenuLink = {
     key: string | number;
     name: string;
     path: string;
+    active?: boolean;
 }
 
 export type MenuItem = {
@@ -19,7 +20,7 @@ export type MenuItem = {
 
 const generateSubMenu = (isGroup: boolean, groupId?: string | number): SubMenuLink[] => {
         return PanelSubMenu.map(key => {
-            return {key: `${key}-${groupId}`, name: StringUtils.capitalizeFirst(key), path: `/panel/${isGroup ? 'groups/' : ''}${key}`};
+            return {key: `${key}-${groupId}`, name: StringUtils.capitalizeFirst(key), path: `/${isGroup ? 'groups/' : ''}${key}`};
         })
 }
 
@@ -37,4 +38,16 @@ export class MenuUtils {
 
         return provider
     }
+
+    public static isMenuItemInPath(item: MenuItem, path: string): boolean {
+        if (item == null) return false;
+        if (item.submenuList == null) return false;
+        
+        return item.submenuList.some(s => path.includes(s.path));
+    }
+
+    public static findSubMenuLinkInPath(links: SubMenuLink[], path: string): SubMenuLink | undefined {
+        const item = links.find(l => path.includes(l.path));
+        return item;
+    } 
 }

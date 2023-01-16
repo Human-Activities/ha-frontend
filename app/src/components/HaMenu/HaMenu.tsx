@@ -1,7 +1,7 @@
 import { Avatar, Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { MenuItem, StringUtils } from "../../model/utils";
+import { useLocation, useNavigate } from "react-router-dom";
+import { MenuItem, MenuUtils, StringUtils, SubMenuLink } from "../../model/utils";
 import HaButton from "../HaButton";
 import './HaMenu.scss';
 
@@ -13,16 +13,41 @@ type HaMenuProps = {
 
 export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
 
-    const [selectedItem, setSelectedItem] = useState<MenuItem>(provider.length > 0 ? provider[0] as MenuItem : {} as MenuItem);
+    const [selectedItem, setSelectedItem] = useState<MenuItem>({} as MenuItem);
     const [dataProvider, setDataProvider] = useState<MenuItem[]>(provider);
     const [subMenuVisible, setSubMenuVisible] = useState(false);
     const [subMenuMounted, setSubMenuMounted] = useState(false);
 
     const navigate = useNavigate();
+    const location = useLocation();
 
     useEffect(() => {
         setDataProvider(provider);
     }, [provider])
+
+    useEffect(() => {
+        if (provider != null && provider.length > 0) {
+            const activeItem = provider.find(i => MenuUtils.isMenuItemInPath(i, location.pathname)) || provider[0];
+            if (activeItem != null) {
+                activeItem.active = true;
+                if (activeItem.submenuList && activeItem.submenuList.length > 0) {
+                    const activeLink = MenuUtils.findSubMenuLinkInPath(activeItem.submenuList, location.pathname);
+                    if (activeLink == null) { 
+                        onSubMenuClick(activeItem.submenuList[0]);
+                    } else {
+                        activeLink.active = true;
+                    }
+                }
+                setSelectedItem(activeItem);
+
+                if (onExpand) {
+                    setSubMenuMounted(true);
+                    setSubMenuVisible(true);
+                    onExpand(true);
+                }
+            }
+        }
+    }, [provider]);
 
     const onMenuMainItemClick = (menuItem: MenuItem) => {
         if (menuItem.key !== selectedItem.key) {
@@ -41,7 +66,7 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
 
         if (onExpand) {
             if (menuItem.submenuList?.length) {
-                if (menuItem.key === selectedItem.key) {
+                if (menuItem.key === selectedItem.key && subMenuVisible) {
                     onExpand(false);
                 } else {
                     onExpand(true);
@@ -73,6 +98,10 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
         });
     }
 
+    const onSubMenuClick = (activeLink: SubMenuLink) => {
+        navigate(activeLink.path);
+    }
+
     return (
         <div className='ha-h-flexbox menu-box'>
             <nav className={`${mode === 'horizontal' ? 'ha-h-flexbox' : 'ha-v-flexbox'} align-center main-navbar`}>
@@ -100,7 +129,7 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
                 <nav>
                     {
                         selectedItem.submenuList.map(si => {
-                            return <HaButton key={si.key} type="text" style={{color: '#FFF'}} onClick={()=> navigate(si.path)}>{si.name}</HaButton>
+                            return <HaButton key={si.key} type="text" style={si.active ? {border: '1px solid white', fontWeight: 700} : {}} onClick={()=> {onSubMenuClick(si)}}>{si.name}</HaButton>
                         })
                     }
                 </nav>
