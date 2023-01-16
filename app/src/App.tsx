@@ -19,7 +19,7 @@ function App() {
               <Route path='/login' element={<LoginPage/>} />
               <Route path='/panel' element={<PanelPage/>} />
               <Route path='/activities' element={<ActivitiesPage />} />
-              <Route path='/todo-list' element={<TodoListPage/>} />
+              <Route path='/todo-lists' element={<TodoListPage/>} />
               <Route path='/' element={<StartingPage/>} />
             </Routes>
           <Footer className='main-footer'>&copy; Human Activities</Footer>

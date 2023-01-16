@@ -3,7 +3,7 @@ import { Tabs, Layout } from "antd";
 import { AppContext, AppContextType } from "../../context";
 import { PanelPage } from "../PanelPage";
 import { ActivitiesTab } from "./ActivitiesTab";
-import { HaButton } from "../../components";
+import { HaButton, HaPageHeader } from "../../components";
 import { getActivities } from "../../services";
 import { CreateActivityModal, useCreateActivityModal } from "./CreateActivity";
 import { Activity } from "../../model/types.api";
@@ -52,10 +52,7 @@ export const ActivitiesPage = () => {
 
     return (
         <PanelPage>
-            <Header className="activities-header">
-                <h3>Activities Page</h3>
-                <HaButton onClick={() => modal.open()}>Add activity</HaButton>
-            </Header>
+            <HaPageHeader title='Activities Page' toolbar={[<HaButton onClick={() => modal.open()}>Add activity</HaButton>]}/>
             <Tabs 
                 type="card"
                 tabBarStyle={{background: "#f5f5f5", margin: 0}}
