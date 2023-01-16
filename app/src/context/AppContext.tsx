@@ -4,10 +4,10 @@ import { notify, PathManager, RequestStatus } from "../model/utils";
 import axios from "axios";
 import { Login, Register } from "../model/types.api";
 import { AuthService } from "../services";
+import { useTranslation } from "react-i18next";
 export interface AppData {
     currentState: string;
     theme: string;
-    locale: string;
 }
 
 
@@ -24,6 +24,7 @@ export type AppContextType = {
     setLocale: (value: string) => void;
     register: (registerTO: Register) => Promise<{status: RequestStatus}>;
     login: (loginTO: Login) => Promise<{status: RequestStatus}>;
+    translate: (key: string) => string;
 }
 
 type AppContextProps = {
@@ -41,6 +42,7 @@ const AppContext = React.createContext<AppContextType | null>(null);
 
 const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     const location = useLocation();
+    const {t, i18n} = useTranslation();
 
     useEffect(() => {
         const currentPath = PathManager.getCurrentStateByPath();
@@ -49,8 +51,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     
     const [appData, setAppData] = useState<AppData>({
         currentState: PathManager.getCurrentStateByPath(),
-        theme: 'light',
-        locale: 'EN'
+        theme: 'light'
     });
 
     const [user, setUserData] = useState<UserData>(userData);
@@ -64,7 +65,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     }
 
     const setLocale = (value: string) => {
-        setAppData((prev)=> ({...prev, locale: value}));
+        i18n.changeLanguage(value);
     }
 
     const register = useCallback(async (registerTO: Register) => {
@@ -91,7 +92,11 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         return { status };
     }, []);
 
-    return <AppContext.Provider value={{appData,user,setCurrentState, setTheme, setLocale, register, login}}>{children}</AppContext.Provider>
+    const translate = (key: string) => {
+        return t(key);
+    }
+
+    return <AppContext.Provider value={{appData,user,setCurrentState, setTheme, setLocale, register, login, translate}}>{children}</AppContext.Provider>
 }
 
 export { AppContext,AppContextProvider };

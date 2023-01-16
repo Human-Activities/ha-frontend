@@ -1,7 +1,9 @@
 import { Avatar, Tooltip } from "antd";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AppContext, AppContextType } from "../../context";
 import { MenuItem, MenuUtils, StringUtils, SubMenuLink } from "../../model/utils";
+import { Trans, useTranslation } from 'react-i18next';
 import HaButton from "../HaButton";
 import './HaMenu.scss';
 
@@ -17,6 +19,7 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
     const [dataProvider, setDataProvider] = useState<MenuItem[]>(provider);
     const [subMenuVisible, setSubMenuVisible] = useState(false);
     const [subMenuMounted, setSubMenuMounted] = useState(false);
+    const {t} = useTranslation();
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -109,7 +112,7 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
                     dataProvider.map(mi => {
                         const shortcut = StringUtils.generateShortcutString(mi.name);
                         return (
-                            <Tooltip key={ mi.key } placement="right" title={ mi.tooltipText || mi.name }>
+                            <Tooltip key={ mi.key } placement="right" title={ mi.translate ? t(mi.translate) : mi.name }>
                                 <Avatar className="menu-avatar" size={ 40 } shape={ 'circle' } style={{ verticalAlign:'middle', border: mi.active ? 'solid 1px lightblue' : 'inherit', backgroundColor: mi.active ? 'var(--menu-avatar-hover-bg-color)' : ''}} onClick={() => onMenuMainItemClick(mi)}>
                                     {shortcut}
                                 </Avatar>
@@ -123,13 +126,13 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
             <div className="ha-v-flexbox align-center sublink-menu" 
                 style={subMenuMounted ? {'animation':'inAnimation 250ms ease-in'} : {'animation': 'outAnimation 250ms ease-out'}}
                 onAnimationEndCapture={(event)=> { if(!subMenuMounted) { event.currentTarget.style.display = 'none'; setSubMenuVisible(false); }}}>
-                <Tooltip placement="right" title={selectedItem.tooltipText || selectedItem.name}>
+                <Tooltip placement="right" title={selectedItem.translate ? t(selectedItem.translate) : selectedItem.name}>
                     <label className="sublink-label">{selectedItem.name}</label>
                 </Tooltip>    
                 <nav>
                     {
                         selectedItem.submenuList.map(si => {
-                            return <HaButton key={si.key} type="text" style={si.active ? {border: '1px solid white', fontWeight: 700} : {}} onClick={()=> {onSubMenuClick(si)}}>{si.name}</HaButton>
+                            return <HaButton key={si.key} type="text" style={si.active ? {border: '1px solid white', fontWeight: 700} : {}} onClick={()=> {onSubMenuClick(si)}}>{t(si.translate)}</HaButton>
                         })
                     }
                 </nav>
