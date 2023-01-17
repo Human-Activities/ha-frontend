@@ -1,18 +1,23 @@
 import i18next from "i18next";
 import { initReactI18next } from "react-i18next";
-import translationEnglish from './locales/en/translation.json';
-import translationPolish from './locales/pl/translation.json';
+import enActivities from "./locales/en/activities.json";
+import enGroups from "./locales/en/groups.json";
+
+const resources = {
+  en: {
+    groups: enGroups,
+    enActivities: enActivities,
+  },
+};
 
 i18next.use(initReactI18next).init({
-    lng: 'pl',
-    resources: {
-        en: {
-            translations: translationEnglish
-        },
-        pl: {
-            translations: translationPolish
-        }
-    }
+  resources,
+  lng: "en",
+  fallbackLng: "en",
+  debug: false,
+  interpolation: {
+    escapeValue: false,
+  },
 });
 
 export default i18next;

@@ -1,0 +1,54 @@
+{
+    "extends": [
+        "eslint:recommended",
+        "plugin:react/recommended",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:prettier/recommended",
+        "prettier"
+    ],
+    "overrides": [
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+        "@typescript-eslint"
+    ],
+    "rules": {
+        "max-len": [
+            "error",
+            {
+              "code": 120,
+              "ignoreComments": true,
+              "ignoreStrings": true,
+              "ignoreTemplateLiterals": true,
+              "ignoreUrls": true
+            }
+          ],
+        "react/self-closing-comp": ["error"],
+        "@typescript-eslint/no-empty-function": ["off"],
+        "@typescript-eslint/ban-ts-comment": [
+            "error",
+            { "ts-ignore": "allow-with-description" }
+        ],
+        "no-duplicate-imports": ["error"],
+        "import/no-default-export": ["error"],
+        "import/no-absolute-path": ["error"],
+        "@typescript-eslint/ban-types": [
+            "error",
+            {
+            "types": {
+                "React.FC": {
+                "message": "Don't use React.FC - instead use component props as functions params."
+                },
+                "FC": {
+                "message": "Don't use React.FC - instead use component props as functions params."
+                }
+            }
+            }
+        ]
+    },
+    "settings": {
+        "import/resolver": {
+          "typescript": {}
+        }
+    }
+}
