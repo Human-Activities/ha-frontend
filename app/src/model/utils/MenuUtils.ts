@@ -1,56 +1,62 @@
-import React from "react";
-import { AppContext, AppContextType } from "../../context";
+import { SubmenuElement } from "../../components/HaMenu/SideMenu";
 import { Group } from "../types.api";
-import { PanelSubMenu } from "./Constants";
-import { StringUtils } from "./StringUtils";
 
 export type SubMenuLink = {
-    key: string | number;
-    translate: string;
-    path: string;
-    active?: boolean;
-}
+  key: string | number;
+  name: string;
+  path: string;
+  active?: boolean;
+};
 
 export type MenuItem = {
-    key: string | number;
-    name: string;
-    translate?: string;
-    active?: boolean;
-    submenuList?: SubMenuLink[];
-    click?: () => void;
-}
+  key: string | number;
+  name: string;
+  active?: boolean;
+  submenuList?: SubMenuLink[];
+  click?: () => void;
+};
 
-const generateSubMenu = (isGroup: boolean, groupId?: string | number): SubMenuLink[] => {
-        return PanelSubMenu.map(key => {
-            return {key: `${key}-${groupId}`, translate: StringUtils.capitalizeFirst(key), path: `/${isGroup ? 'groups/' : ''}${key}`};
-        })
-}
+// todo: swap current menu with some context-dependent,
+// fetch all menu data (groups) and store them in context and local storage to ease access the menu items
+// thanks to this we could route by /groups/best-groups-ever/activities
+// and then inside the activities component just fetch data by group[name].groupGuid
+const generateSubMenu = (menuItems: SubmenuElement[], groupId?: string): SubMenuLink[] => {
+  return menuItems.map((item) => ({
+    key: `${item.key}-${groupId}`,
+    name: item.name,
+    path: `/${groupId?.length ? "groups/" : ""}${item.key}`,
+  }));
+};
 
 export class MenuUtils {
+  public static generateMenuProviderForPanel(
+    groups: Group[],
+    submenuList: SubmenuElement[],
+    addGroupClick?: () => void
+  ): MenuItem[] {
+    const defaultKey = "panel-menu-item";
+    const provider: MenuItem[] = [
+      { key: defaultKey + "-0", name: "YourPanel", submenuList: generateSubMenu(submenuList) },
+    ];
 
-    public static generateMenuProviderForPanel(groups: Group[], addGroupClick?: () => void): MenuItem[] {
-        const defaultKey = 'panel-menu-item'
-        const provider: MenuItem[] = [ 
-            {key: defaultKey + '-0', name: 'YourPanel', submenuList: generateSubMenu(false, 'user')}
-        ];
+    groups.forEach((g) =>
+      provider.push({ key: `${defaultKey}-${g.guid}`, name: g.name, submenuList: generateSubMenu(submenuList, g.guid) })
+    );
 
-        groups.forEach(g => 
-            provider.push({key: `${defaultKey}-${g.guid}`, name: g.name, submenuList: generateSubMenu(true, g.guid)}));
-        
-        provider.push({key: defaultKey + '-add', name: '+', translate: 'CreateGroup', click: addGroupClick});
+    provider.push({ key: defaultKey + "-add", name: "+", click: addGroupClick });
 
-        return provider
-    }
+    return provider;
+  }
 
-    public static isMenuItemInPath(item: MenuItem, path: string): boolean {
-        if (item == null) return false;
-        if (item.submenuList == null) return false;
-        
-        return item.submenuList.some(s => path.includes(s.path));
-    }
+  public static isMenuItemInPath(item: MenuItem, path: string): boolean {
+    if (item == null) return false;
+    if (item.submenuList == null) return false;
 
-    public static findSubMenuLinkInPath(links: SubMenuLink[], path: string): SubMenuLink | undefined {
-        const item = links.find(l => path.includes(l.path));
-        return item;
-    } 
+    return item.submenuList.some((s) => path.includes(s.path));
+  }
+
+  public static findSubMenuLinkInPath(links: SubMenuLink[], path: string): SubMenuLink | undefined {
+    const item = links.find((l) => path.includes(l.path));
+    return item;
+  }
 }
