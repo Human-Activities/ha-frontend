@@ -8,7 +8,6 @@ import { AuthService } from "../services";
 export interface AppData {
     currentState: string;
     theme: string;
-    locale: string;
 }
 
 // class UserData {
@@ -32,6 +31,7 @@ export type AppContextType = {
     setLocale: (value: string) => void;
     register: (registerTO: Register) => Promise<{status: RequestStatus}>;
     login: (loginTO: Login) => Promise<{status: RequestStatus}>;
+    translate: (key: string) => string;
 }
 
 type AppContextProps = {
@@ -45,6 +45,7 @@ const AppContext = React.createContext<AppContextType | null>(null);
 
 const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     const location = useLocation();
+    const {t, i18n} = useTranslation();
 
     useEffect(() => {
         const currentPath = PathManager.getCurrentStateByPath();
@@ -53,8 +54,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     
     const [appData, setAppData] = useState<AppData>({
         currentState: PathManager.getCurrentStateByPath(),
-        theme: 'light',
-        locale: 'EN'
+        theme: 'light'
     });
 
     //const [user, setUserData] = useState<UserData>();
@@ -68,7 +68,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     }
 
     const setLocale = (value: string) => {
-        setAppData((prev)=> ({...prev, locale: value}));
+        i18n.changeLanguage(value);
     }
 
     const getUserFromLocalStorage = (): UserData => {
