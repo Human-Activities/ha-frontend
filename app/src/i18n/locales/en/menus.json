@@ -1,0 +1,8 @@
+{
+    "submenu": {
+        "activities": "Activities",
+        "events": "Events",
+        "settlements": "Settlements",
+        "todo-lists": "Todo lists"
+    }
+}
