@@ -1,0 +1,23 @@
+.default {
+  background-color: "";
+  color: inherit;
+}
+
+.positive {
+  background-color: white;
+  color: var(--color-dark-green);
+}
+
+.negative {
+  background-color: white;
+  color: var(--color-dark-red);
+}
+
+.primary {
+  background-color: orange;
+  color: white;
+
+  &.negative {
+    background-color: var(--color-dark-red);
+  }
+}

@@ -4,17 +4,25 @@ import { notify, PathManager, RequestStatus } from "../model/utils";
 import axios from "axios";
 import { Login, Register } from "../model/types.api";
 import { AuthService } from "../services";
+
 export interface AppData {
     currentState: string;
     theme: string;
     locale: string;
 }
 
+// class UserData {
+//     //todo: logged user guid is required to be accessed everywhere...
+//     userGuid = localStorage.getItem("userGuid");
+//     accessToken = localStorage.getItem("accessToken");
+//     refreshToken = localStorage.getItem("refreshToken");
+// };
 
-class UserData {
-    accessToken = localStorage.getItem("accessToken");
-    refreshToken = localStorage.getItem("refreshToken");
-};
+export type UserData = {
+    userGuid: string;
+    accessToken: string;
+    refreshToken: string;
+}
 
 export type AppContextType = {
     appData: AppData;
@@ -30,12 +38,8 @@ type AppContextProps = {
     children?: React.ReactNode;
 }
 
-
-const userData = new UserData();
-
-if (userData.accessToken != null) {
-    axios.defaults.headers.common.Authorization = `Bearer ${userData.accessToken}`;
-}
+ //const userData = new UserData();
+// const userData: UserData = { accessToken: localStorage.getItem("accessToken"), refreshToken: localStorage.getItem("refreshToken"), userGuid: localStorage.getItem("userGuid")}
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
@@ -53,7 +57,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         locale: 'EN'
     });
 
-    const [user, setUserData] = useState<UserData>(userData);
+    //const [user, setUserData] = useState<UserData>();
 
     const setCurrentState = (value: string) => {
         setAppData((prev) => ({...prev, currentState: value}));
@@ -65,6 +69,19 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
 
     const setLocale = (value: string) => {
         setAppData((prev)=> ({...prev, locale: value}));
+    }
+
+    const getUserFromLocalStorage = (): UserData => {
+        const accessToken = localStorage.getItem("accessToken");
+        const refreshToken = localStorage.getItem("refreshToken");
+        const userGuid = localStorage.getItem("userGuid");
+
+        if (!accessToken || !refreshToken || !userGuid) {
+            
+            throw new Error("Unauthorized");
+        }
+
+        return { accessToken, refreshToken, userGuid }
     }
 
     const register = useCallback(async (registerTO: Register) => {
@@ -82,8 +99,12 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         if (status === RequestStatus.SUCCESS) {
             localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('refreshToken', data.refreshToken);
+            // todo: check what backend response is like
+            //localStorage.setItem('userGuid', data.userGuid);
+            // temp for testing
+            localStorage.setItem('userGuid', "63ef1ebe-2e40-4818-ad4c-69e5d2885da9");
             axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
-            setUserData(new UserData());
+            //setUserData(getUserFromLocalStorage());
             notify('success', 'Login successful', 'Successfully logged in');
             return { status }
         }
@@ -91,7 +112,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         return { status };
     }, []);
 
-    return <AppContext.Provider value={{appData,user,setCurrentState, setTheme, setLocale, register, login}}>{children}</AppContext.Provider>
+    return <AppContext.Provider value={{appData, user: getUserFromLocalStorage(), setCurrentState, setTheme, setLocale, register, login}}>{children}</AppContext.Provider>
 }
 
 export { AppContext,AppContextProvider };

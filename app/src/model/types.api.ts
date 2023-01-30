@@ -1,11 +1,11 @@
 export type Activity = {
-    id: number;
+    guid: number;
     title: string;
     category: string;
     description: string;
     author: string;
-    createdDate?: Date;
-    isCurrentUserAuthor: boolean; // todo: userId
+    createdDate: string;
+    userGuid: string;
     isPrivate: boolean;
 }
 

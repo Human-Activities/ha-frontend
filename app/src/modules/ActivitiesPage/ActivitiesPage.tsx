@@ -1,54 +1,75 @@
-import React, { useEffect, useState } from "react";
-import { Tabs, Layout } from "antd";
-import { AppContext, AppContextType } from "../../context";
+import React, { useCallback, useEffect, useState } from "react";
+import { Tabs } from "antd";
 import { PanelPage } from "../PanelPage";
 import { ActivitiesTab } from "./ActivitiesTab";
 import { HaButton, HaPageHeader } from "../../components";
-import { getActivities } from "../../services";
+import { getActivities, getGroupActivities } from "../../services";
 import { CreateActivityModal, useCreateActivityModal } from "./CreateActivity";
 import { Activity } from "../../model/types.api";
 
 import "./ActivitiesPage.scss";
+import { TabItem } from "../../model/types.app";
+import { useParams } from "react-router-dom";
 
-type ActivitiesType = "friends" | "user";
-const { Header } = Layout;
+type ActivitiesType = "friends" | "user" | "group";
 
 export const ActivitiesPage = () => {
-    const {user} = React.useContext(AppContext) as AppContextType;
+    const { groupGuid } = useParams();
     const [activities, setActivities] = useState<Activity[]>([]);
     const [selectedTab, setSelectedTab] = useState<ActivitiesType>("friends");
+    const [selectedGroupGuid, setSelectedGroupGuid] = useState<string>("");
     const { modal, form } = useCreateActivityModal();
 
-    const fetchActivities = (key: ActivitiesType) => {
-        if (key === "friends") {
-            getActivities().then(response => {
-                setSelectedTab("friends");
-                setActivities(response)
-            });
-        } else {
-            getActivities(true).then(response => {
-                setSelectedTab("user");
-                setActivities(response)
-            });
-        }
-    }
-
-    const defaultTabs = [
+    const defaultTabs: TabItem<ActivitiesType>[] = [
         {
-            label: "Aktywności twojego grona",
+            label: "Friends & Mine",
             key: "friends",
             children: <ActivitiesTab activities={selectedTab === "friends" ? activities : []}/>
         },
         {
-            label: "Twoje aktywności",
-            key: "yours",
+            label: "Mine",
+            key: "user",
             children: <ActivitiesTab activities={selectedTab === "user" ? activities : []}/>
         }
-    ]
+    ];
+
+    const groupTab: TabItem<ActivitiesType> = { 
+        label: "Group", 
+        key: "group", 
+        children: <ActivitiesTab activities={selectedTab === "group" ? activities : []} /> 
+    };
+
+    const fetchActivities = useCallback((key: ActivitiesType) => {
+        switch(key) {
+            case "friends": 
+                getActivities().then(response => {
+                    setSelectedTab("friends");
+                    setActivities(response)
+                });
+            break;
+            case "user":
+                getActivities(true).then(response => {
+                    setSelectedTab("user");
+                    setActivities(response)
+                });
+            break;
+            case "group":
+                getGroupActivities(selectedGroupGuid).then(response => {
+                    setSelectedTab("group");
+                    setActivities(response)
+                });
+            break;
+        }
+    }, []);
 
     useEffect(() => {
+        if (groupGuid) {
+            setSelectedTab("group");
+            setSelectedGroupGuid(groupGuid);
+        }
+
         fetchActivities(selectedTab);
-    }, []);
+    }, [fetchActivities]);
 
     return (
         <PanelPage>
@@ -56,7 +77,7 @@ export const ActivitiesPage = () => {
             <Tabs 
                 type="card"
                 tabBarStyle={{background: "#f5f5f5", margin: 0}}
-                items={defaultTabs} 
+                items={groupGuid ? [groupTab] : defaultTabs} 
                 onTabClick={(key) => fetchActivities(key as ActivitiesType)} /> 
             <CreateActivityModal key="createModal" formModal={{ modal, form}}/>
         </PanelPage>

@@ -1,5 +1,8 @@
 import React, { ReactNode } from "react";
 import { Button } from "antd";
+import cx from "classnames";
+
+import "./HaButton.scss";
 
 type HaButtonProps = {
     onClick?: () => void;
@@ -13,7 +16,6 @@ type HaButtonProps = {
     variant?: 'neutral' | 'positive' | 'negative';
 }
 
-
 const HaButton: React.FC<HaButtonProps> = ({variant = 'neutral', ...props}: HaButtonProps) => {
     return <Button
         size={
@@ -21,10 +23,13 @@ const HaButton: React.FC<HaButtonProps> = ({variant = 'neutral', ...props}: HaBu
             props.size == 'small' ? 'small' : 'middle'
         } 
         type={props.type || 'default'} 
+        className={
+            cx(
+            props.type === 'primary' || props.type === 'default' ? 'primary' : 'default', 
+            variant === 'negative' ? 'negative' : variant === 'positive' ? 'positive' : '',
+            )}
         style={{
-            ...props.style, 
-            background: props.type === 'primary' || props.type === 'default' ? 'orange' : '',
-            color: variant === 'neutral' ? 'inherit' : variant === 'positive' ? 'var(--color-dark-green)' : 'var(--color-dark-red)',
+            ...props.style
         }} 
         onClick={props.onClick}
         htmlType={props.htmlType || 'button'}

@@ -18,11 +18,11 @@ export const useCreateActivityModal = (): FormModalInstance<CreateActivityValues
         modal.close();
     }
 
-    const modal = useModal('Create activity', 'large', {instance: createActivityForm, onFetch: createActivity});
+    const modal = useModal({ title: 'Create activity', variant: 'large', form: {instance: createActivityForm, onFetch: createActivity} });
     return { modal: modal, form: createActivityForm}
 }
 
-export const CreateActivityModal = ({formModal, isGroupActivity}: CreateActivityProps) => {
+export const CreateActivityModal = ({ formModal, isGroupActivity }: CreateActivityProps) => {
     const { modal: { isOpen, props }, form } = formModal;
     return(
         <HaModal {...props} open={isOpen} >

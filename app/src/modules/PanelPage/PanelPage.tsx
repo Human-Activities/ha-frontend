@@ -3,7 +3,7 @@ import { Layout } from "antd";
 import './PanelPage.scss';
 import { AppContext, AppContextType } from "../../context";
 import { HaMenu, HaModal } from "../../components";
-import { MenuItem, MenuUtils, ModalFormParams, notify, RequestStatus, SubMenuLink, useModal } from "../../model/utils";
+import { MenuItem, MenuUtils, HaModalFormParams, notify, RequestStatus, SubMenuLink, useModal } from "../../model/utils";
 import { useNavigate } from "react-router-dom";
 import { CreateGroupForm } from "../GroupPage";
 import { useForm } from "antd/es/form/Form";
@@ -37,7 +37,7 @@ export const PanelPage = ({ children }: PanelProps) => {
         isOpen: addGroupModalOpen, 
         open: showAddGroupModal, 
         close: closeAddGroupModal, 
-        props: addgroupModalProps} = useModal('Create new group', 'small', {instance: groupFormInstance, onFetch: onCreateGroup} as ModalFormParams<Group>);
+        props: addgroupModalProps} = useModal('Create new group', 'small', {instance: groupFormInstance, onFetch: onCreateGroup} as HaModalFormParams<Group>);
     
     const onExpand = (value: boolean) => setExpanded(value);
     
