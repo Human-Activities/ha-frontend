@@ -1,10 +1,18 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 4em;
+}
+
 .acticities-container-card {
-    width: 100%;
+    max-width: 100em;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3em;
     
     .activity-card {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 50em;
+        width: 40em;
+        max-width: 40em;
         margin-bottom: 20px;
         font-size: 12px;
 

@@ -9,6 +9,8 @@ import { ActivitiesPage } from './modules/ActivitiesPage/ActivitiesPage';
 const { Footer } = Layout;
 
 function App() {
+  // just for local testing
+  localStorage.setItem('userGuid', "63ef1ebe-2e40-4818-ad4c-69e5d2885da9");
 
   return (
     <BrowserRouter>
@@ -18,6 +20,7 @@ function App() {
             <Routes>
               <Route path='/login' element={<LoginPage/>} />
               <Route path='/panel' element={<PanelPage/>} />
+              <Route path='/groups/:groupGuid/activities' element={<ActivitiesPage />} />
               <Route path='/activities' element={<ActivitiesPage />} />
               <Route path='/todo-lists' element={<TodoListPage/>} />
               <Route path='/' element={<StartingPage/>} />

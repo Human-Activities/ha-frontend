@@ -18,7 +18,6 @@ export type HaModalProps = {
     maskClosable?: boolean
 }
 
-
 export const HaModal = (props: HaModalProps) => {
     const { variant } = props;
     const width = variant === 'small' ? 300 : variant === 'medium' ? 600 : 850;

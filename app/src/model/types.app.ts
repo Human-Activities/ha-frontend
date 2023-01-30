@@ -1,5 +1,6 @@
 import { FormInstance } from "antd"
-import { ModalState } from "./utils";
+import React from "react";
+import { HaModalState } from "./utils";
 
 export type FormProps<T> = {
     form: FormInstance<T>;
@@ -7,5 +8,11 @@ export type FormProps<T> = {
 
 export type FormModalInstance<T> = {
     form: FormInstance<T>;
-    modal: ModalState;
+    modal: HaModalState;
+}
+
+export type TabItem<T> = {
+    label: string;
+    key: T;
+    children: React.ReactNode;
 }

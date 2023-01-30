@@ -3,27 +3,38 @@ import { useCallback, useState } from "react";
 import { HaModalProps } from "../../components/HaModal";
 import { ModalVariant } from "../../components/HaModal/HaModal";
 
-export type ModalFormParams<T> = {
+export type HaModalFormParams<T> = {
     instance : FormInstance<T>,
     onFetch: (value: T) => void;
 }
 
-export type ModalState = {
+export type HaModalState<TData = {}> = {
     isOpen: boolean;
     open: () => void;
     close: () => void;
+    data?: TData;
     props: HaModalProps;
     fetcher?: () => any;
 }
 
-export const useModal = (
+type HaModalHookParams<TData> = {
     title?: string, 
     variant?: ModalVariant,
-    form?: ModalFormParams<any>, 
+    form?: HaModalFormParams<any>, 
+    data?: TData,
     spinner?: boolean
-    ): ModalState => 
-    {
+}
+
+export const useModal = <TData = {}, >({
+    title, 
+    variant,
+    form,
+    data,
+    spinner,
+    }: HaModalHookParams<TData>): HaModalState<TData> => 
+{
         const [isModalOpen, setModalOpen] = useState(false);
+        const [modalData] = useState(data);
 
         const modalProps: HaModalProps = {
             title: title, 
@@ -55,8 +66,8 @@ export const useModal = (
         }
 
     if (form != null) {    
-        return {isOpen: isModalOpen, open: showModal, close: closeModal, props: modalProps, fetcher: fetchFormValues};
+        return {isOpen: isModalOpen, open: showModal, close: closeModal, data: modalData, props: modalProps, fetcher: fetchFormValues};
     } else {
-        return {isOpen: isModalOpen, open: showModal, close: closeModal, props: modalProps};
+        return {isOpen: isModalOpen, open: showModal, close: closeModal, data: modalData, props: modalProps};
     }
 }
