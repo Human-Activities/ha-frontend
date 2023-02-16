@@ -122,7 +122,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
             // temp for testing
             localStorage.setItem('userGuid', "63ef1ebe-2e40-4818-ad4c-69e5d2885da9");
             axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
-            await getCommonData();
+            //await getCommonData();
             //setUserData(getUserFromLocalStorage());
             notify('success', 'Login successful', 'Successfully logged in');
             return { status }
@@ -139,34 +139,34 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         return false;
       }, []);
 
-    useMemo(() => {
-        //axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+    // useMemo(() => {
+    //     //axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
     
-        axios.interceptors.request.use((config): AxiosRequestConfig => {
-          config.withCredentials = true;
-          if(config.headers){
-            config.headers = {
-                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-            };
-          }
-          return config;
-        });
+    //     axios.interceptors.request.use((config): AxiosRequestConfig => {
+    //       config.withCredentials = true;
+    //       if(config.headers){
+    //         config.headers = {
+    //             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+    //         };
+    //       }
+    //       return config;
+    //     });
     
-        axios.interceptors.response.use((response)=> response, async error => {
-          const request = error.config;
-          if(error.response.status === 400 && request?.url?.includes("TODO")){
-            // todo logout 
-            return;
-          }
-          if(error.response.status === 401) {
-            const result = await refreshToken();
-            if(result){
-              request.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
-              return axios(request)
-            }
-          }
-        });
-      }, []);
+    //     axios.interceptors.response.use((response)=> response, async error => {
+    //       const request = error.config;
+    //       if(error.response.status === 400 && request?.url?.includes("TODO")){
+    //         // todo logout 
+    //         return;
+    //       }
+    //       if(error.response.status === 401) {
+    //         const result = await refreshToken();
+    //         if(result){
+    //           request.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+    //           return axios(request)
+    //         }
+    //       }
+    //     });
+    //   }, []);
 
     return <AppContext.Provider value={{appData, user: getUserFromLocalStorage(), setCurrentState, setTheme, setLocale, register, login}}>
             {children}

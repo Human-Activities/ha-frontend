@@ -29,7 +29,7 @@ export const ActivitiesTab = ({ activities }: TabProps) => {
     
     return (
         <div className="wrapper">
-            <div className="acticities-container-card">
+            <div className="activities-container-card">
                 {activities.map((activity) => {
                     return (
                         <Card 
