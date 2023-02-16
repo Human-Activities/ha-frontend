@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { HaButton, HaModal, HaModalProps } from "../../../components";
 import { Activity } from "../../../model/types.api";
 import { HaModalState, useModal } from "../../../model/utils";
@@ -12,7 +12,8 @@ type DeleteActivityProps = {
 }
 
 export const useDeleteActivityModal = (): HaModalState => {
-    const modal = useModal<Activity>({ title: 'Delete activity', variant: 'medium' });
+    const { t } = useTranslation("activities")
+    const modal = useModal<Activity>({ title: t("modals.delete.title"), variant: 'medium' });
     return modal;
 }
 
@@ -27,7 +28,9 @@ export const DeleteActivityModal = ({ activity, modal }: DeleteActivityProps) =>
         onOk={() => deleteActivity(activity.guid)}
         footer={footer}
         >
-            <div className="confirmationBody">Are you sure you want to delete activity <i>{activity.title}</i>?</div>
+            <div className="confirmationBody">
+                <Trans i18nKey="activities:modals.delete.confirmationMessage" values={{activityTitle: activity.title}} components={[<i />]} />
+            </div>
         </HaModal>
     )
 }

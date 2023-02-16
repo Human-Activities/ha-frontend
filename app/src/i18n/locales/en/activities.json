@@ -1,3 +1,27 @@
 {
-    
+    "details": {
+        "category": "Category",
+        "description": "Description",
+        "name": "Name",
+        "share": {
+            "label": "Share",
+            "tooltip": "Check this box to share the activity with your group or friends"
+        },
+        "validation": {
+            "description": "Provide a short description",
+            "name": "Provide activity name"
+        }
+    },
+    "grid": {
+        "header": "Activities"
+    },
+    "modals": {
+        "create": {
+            "title": "Create activity"
+        },
+        "delete": {
+            "confirmationMessage": "Are you sure you want to delete activity <0>{{activityTitle}}</0>?",
+            "title": "Delete activity"
+        }
+    }
 }

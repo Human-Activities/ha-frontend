@@ -18,7 +18,6 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
   const [dataProvider, setDataProvider] = useState<MenuItem[]>(provider);
   const [subMenuVisible, setSubMenuVisible] = useState(false);
   const [subMenuMounted, setSubMenuMounted] = useState(false);
-  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const location = useLocation();

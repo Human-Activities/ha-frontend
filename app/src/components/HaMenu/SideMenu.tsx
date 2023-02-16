@@ -2,14 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useForm } from "antd/es/form/Form";
 import { AppContext, AppContextType } from "../../context";
 import { Group } from "../../model/types.api";
-import { MenuUtils, RequestStatus, notify, ModalFormParams, MenuItem, useModal } from "../../model/utils";
+import { MenuUtils, RequestStatus, notify, MenuItem, useModal, submenuKeys } from "../../model/utils";
 import { GroupService } from "../../services";
 import { HaMenu } from "./HaMenu";
 import { HaModal } from "../HaModal";
 import { CreateGroupForm } from "../../modules/GroupPage";
 import { useTranslation } from "react-i18next";
 
-const submenuKeys = ["activities", "todo-lists", "settlements", "events"];
 export type SubmenuElement = {
   key: string;
   name: string;
@@ -41,10 +40,14 @@ export const SideMenu = ({ onExpand }: SideMenuProps) => {
     open: showAddGroupModal,
     close: closeAddGroupModal,
     props: addgroupModalProps,
-  } = useModal("Create new group", "small", {
-    instance: groupFormInstance,
-    onFetch: onCreateGroup,
-  } as ModalFormParams<Group>);
+  } = useModal({
+    title: "Create new group", 
+    variant: "small", 
+    form: {
+      instance: groupFormInstance,
+      onFetch: onCreateGroup,
+    }
+  });
 
   const getGroups = useCallback(async () => {
     const { status, data, error } = await GroupService.getGroups();
@@ -67,7 +70,7 @@ export const SideMenu = ({ onExpand }: SideMenuProps) => {
   return (
     <>
       <HaMenu provider={menuProvider} onExpand={onExpand} />
-      <HaModal title={""} {...addgroupModalProps} open={addGroupModalOpen}>
+      <HaModal {...addgroupModalProps} open={addGroupModalOpen}>
         <CreateGroupForm form={groupFormInstance} />
       </HaModal>
     </>

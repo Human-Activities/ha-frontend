@@ -4,6 +4,7 @@ import { HaModal } from "../../../components"
 import { FormModalInstance } from "../../../model/types.app"
 import { useModal } from "../../../model/utils"
 import { CreateActivityForm, CreateActivityValues } from "./CreateActivityForm"
+import { useTranslation } from "react-i18next"
 
 type CreateActivityProps = {
     formModal: FormModalInstance<CreateActivityValues>;
@@ -12,13 +13,14 @@ type CreateActivityProps = {
 
 export const useCreateActivityModal = (): FormModalInstance<CreateActivityValues> => {
     const [createActivityForm] = useForm<CreateActivityValues>();
+    const { t } = useTranslation("activities");
 
     const createActivity = (values: CreateActivityValues) => {
         console.log(values)
         modal.close();
     }
 
-    const modal = useModal({ title: 'Create activity', variant: 'large', form: {instance: createActivityForm, onFetch: createActivity} });
+    const modal = useModal({ title: t("modals.create.title"), variant: 'large', form: {instance: createActivityForm, onFetch: createActivity} });
     return { modal: modal, form: createActivityForm}
 }
 

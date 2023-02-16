@@ -8,3 +8,6 @@ export enum RequestStatus {
   SUCCESS = "success",
   ERROR = "error",
 }
+
+export const submenuKeys = ["activities", "todo-lists", "finances", "events"];
+

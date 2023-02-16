@@ -2,7 +2,7 @@
     "submenu": {
         "activities": "Activities",
         "events": "Events",
-        "settlements": "Settlements",
+        "finances": "Finances",
         "todo-lists": "Todo lists"
     }
 }

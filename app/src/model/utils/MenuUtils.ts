@@ -40,7 +40,11 @@ export class MenuUtils {
     ];
 
     groups.forEach((g) =>
-      provider.push({ key: `${defaultKey}-${g.guid}`, name: g.name, submenuList: generateSubMenu(submenuList, g.guid) })
+      provider.push({ 
+        key: `${defaultKey}-${g.guid}`, 
+        name: g.name, 
+        submenuList: generateSubMenu(submenuList, g.guid) 
+      })
     );
 
     provider.push({ key: defaultKey + "-add", name: "+", click: addGroupClick });

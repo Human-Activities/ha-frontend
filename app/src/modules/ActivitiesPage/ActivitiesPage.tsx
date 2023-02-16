@@ -10,10 +10,12 @@ import { Activity } from "../../model/types.api";
 import "./ActivitiesPage.scss";
 import { TabItem } from "../../model/types.app";
 import { useParams } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 type ActivitiesType = "friends" | "user" | "group";
 
 export const ActivitiesPage = () => {
+    const { t } = useTranslation("activities");
     const { groupGuid } = useParams();
     const [activities, setActivities] = useState<Activity[]>([]);
     const [selectedTab, setSelectedTab] = useState<ActivitiesType>("friends");
@@ -73,7 +75,7 @@ export const ActivitiesPage = () => {
 
     return (
         <PanelPage>
-            <HaPageHeader title='Activities Page' toolbar={[<HaButton onClick={() => modal.open()}>Add activity</HaButton>]}/>
+            <HaPageHeader title={t("grid.header")} toolbar={[<HaButton onClick={() => modal.open()}>Add activity</HaButton>]}/>
             <Tabs 
                 type="card"
                 tabBarStyle={{background: "#f5f5f5", margin: 0}}

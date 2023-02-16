@@ -1,0 +1,1 @@
+export { DeleteBillModal } from "./DeleteBillModal";

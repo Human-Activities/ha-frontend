@@ -1,13 +1,17 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { notify, PathManager, RequestStatus } from "../model/utils";
-import axios from "axios";
-import { Login, Register } from "../model/types.api";
+import axios, { AxiosRequestConfig } from "axios";
+import { ActivityCategory, BillItemCategory, Login, Register } from "../model/types.api";
 import { AuthService } from "../services";
+import { useTranslation } from "react-i18next";
+import { getActivityCategories, getBillItemCategories } from "../services/categories";
 
 export interface AppData {
     currentState: string;
     theme: string;
+    activityCategories: ActivityCategory[];
+    billItemCategories: BillItemCategory[];
 }
 
 // class UserData {
@@ -31,7 +35,6 @@ export type AppContextType = {
     setLocale: (value: string) => void;
     register: (registerTO: Register) => Promise<{status: RequestStatus}>;
     login: (loginTO: Login) => Promise<{status: RequestStatus}>;
-    translate: (key: string) => string;
 }
 
 type AppContextProps = {
@@ -45,7 +48,8 @@ const AppContext = React.createContext<AppContextType | null>(null);
 
 const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     const location = useLocation();
-    const {t, i18n} = useTranslation();
+    const navigate = useNavigate();
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         const currentPath = PathManager.getCurrentStateByPath();
@@ -54,7 +58,9 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     
     const [appData, setAppData] = useState<AppData>({
         currentState: PathManager.getCurrentStateByPath(),
-        theme: 'light'
+        theme: 'light',
+        activityCategories: [],
+        billItemCategories: [],
     });
 
     //const [user, setUserData] = useState<UserData>();
@@ -77,11 +83,23 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         const userGuid = localStorage.getItem("userGuid");
 
         if (!accessToken || !refreshToken || !userGuid) {
-            
-            throw new Error("Unauthorized");
+            if(location.pathname != "/login") navigate("/login");
+                return {} as UserData;
         }
 
         return { accessToken, refreshToken, userGuid }
+    }
+
+    const getCommonData = async () => {
+        try {
+            const activityCategories = await getActivityCategories();
+            const billItemCategories = await getBillItemCategories();
+
+            setAppData((prevData) => ({...prevData, activityCategories, billItemCategories}));
+        } catch(error) {
+            notify('error', 'Error', (error as any).message);
+        }
+        
     }
 
     const register = useCallback(async (registerTO: Register) => {
@@ -104,6 +122,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
             // temp for testing
             localStorage.setItem('userGuid', "63ef1ebe-2e40-4818-ad4c-69e5d2885da9");
             axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
+            await getCommonData();
             //setUserData(getUserFromLocalStorage());
             notify('success', 'Login successful', 'Successfully logged in');
             return { status }
@@ -112,7 +131,46 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         return { status };
     }, []);
 
-    return <AppContext.Provider value={{appData, user: getUserFromLocalStorage(), setCurrentState, setTheme, setLocale, register, login}}>{children}</AppContext.Provider>
+    const refreshToken = useCallback(async () => {
+        const refreshTonekURL = "todo"
+        const { data } = await axios.post(refreshTonekURL);
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        return false;
+      }, []);
+
+    useMemo(() => {
+        //axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+    
+        axios.interceptors.request.use((config): AxiosRequestConfig => {
+          config.withCredentials = true;
+          if(config.headers){
+            config.headers = {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            };
+          }
+          return config;
+        });
+    
+        axios.interceptors.response.use((response)=> response, async error => {
+          const request = error.config;
+          if(error.response.status === 400 && request?.url?.includes("TODO")){
+            // todo logout 
+            return;
+          }
+          if(error.response.status === 401) {
+            const result = await refreshToken();
+            if(result){
+              request.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+              return axios(request)
+            }
+          }
+        });
+      }, []);
+
+    return <AppContext.Provider value={{appData, user: getUserFromLocalStorage(), setCurrentState, setTheme, setLocale, register, login}}>
+            {children}
+        </AppContext.Provider>
 }
 
-export { AppContext,AppContextProvider };
+export { AppContext, AppContextProvider };

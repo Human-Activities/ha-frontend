@@ -40,7 +40,7 @@ export const ActivitiesTab = ({ activities }: TabProps) => {
                             title={<ActivityHeader {...activity} />} 
                             extra={activity.userGuid === loggeduserGuid && <ActivityBtnGroup openDeleteModal={deleteActivityModal.open} cta={() => setCtaActivity(activity)} />} 
                         >
-                            <h3 className="activity-card-category">{activity.category}</h3>
+                            <h3 className="activity-card-category">{activity.category.name}</h3>
                             <p className="activity-card-description">{activity.description}</p>
                         </Card>
                     )

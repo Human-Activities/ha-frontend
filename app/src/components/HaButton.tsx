@@ -14,6 +14,7 @@ type HaButtonProps = {
     icon?: any;
     style?: React.CSSProperties;
     variant?: 'neutral' | 'positive' | 'negative';
+    disabled?: boolean;
 }
 
 const HaButton: React.FC<HaButtonProps> = ({variant = 'neutral', ...props}: HaButtonProps) => {
@@ -34,6 +35,7 @@ const HaButton: React.FC<HaButtonProps> = ({variant = 'neutral', ...props}: HaBu
         onClick={props.onClick}
         htmlType={props.htmlType || 'button'}
         icon={props.icon}
+        disabled={props.disabled}
         >{props.label || props.children}</Button>
 }
 
