@@ -14,5 +14,31 @@ export type FormModalInstance<T> = {
 export type TabItem<T> = {
     label: string;
     key: T;
-    children: React.ReactNode;
+    children?: React.ReactNode;
+    closable?: boolean;
+    closeIcon?: React.ReactNode;
 }
+
+export type CreateBillItem = {
+    number: number;
+    name: string;
+    categoryId: number;
+    userGuid: string;
+    price: number;
+};
+
+export interface CreateBillValues {
+    name: string;
+    userGuid: string;
+    groupGuid?: string;
+    items: CreateBillItem[];
+};
+
+export interface UpdateBillValues {
+    userGuid: string;
+    billGuid: string;
+    name: string;
+    items: CreateBillItem[];
+};
+
+export type BillFormValues = CreateBillValues | UpdateBillValues;

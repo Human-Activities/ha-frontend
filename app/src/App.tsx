@@ -5,6 +5,7 @@ import { AppHeader } from './components';
 import { AppContextProvider } from './context';
 import { LoginPage, PanelPage, StartingPage, TodoListPage } from './modules';
 import { ActivitiesPage } from './modules/ActivitiesPage/ActivitiesPage';
+import { FinancesPage } from './modules/FinancesPage/FinancesPage';
 
 const { Footer } = Layout;
 
@@ -21,7 +22,9 @@ function App() {
               <Route path='/login' element={<LoginPage/>} />
               <Route path='/panel' element={<PanelPage/>} />
               <Route path='/groups/:groupGuid/activities' element={<ActivitiesPage />} />
+              <Route path='/groups/:groupGuid/finances' element={<FinancesPage />} />
               <Route path='/activities' element={<ActivitiesPage />} />
+              <Route path='/finances' element={<FinancesPage />} />
               <Route path='/todo-lists' element={<TodoListPage/>} />
               <Route path='/' element={<StartingPage/>} />
             </Routes>

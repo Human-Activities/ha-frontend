@@ -1,0 +1,14 @@
+{
+    "grid": {
+        "header": "Finances"
+    },
+    "modals": {
+        "create": {
+            "title": "Create new bill"
+        },
+        "delete": {
+            "confirmationMessage": "Are you sure you want to delete bill no. <0>{{billNumber}}</0>?",
+            "title": "Delete bill"
+        }
+    }
+}

@@ -1,7 +1,18 @@
+export type BillItemCategory = {
+    id: number;
+    name: string;
+}
+
+export type ActivityCategory = {
+    id: number;
+    name: string;
+    rankPoints: number;
+}
+
 export type Activity = {
     guid: number;
     title: string;
-    category: string;
+    category: ActivityCategory;
     description: string;
     author: string;
     createdDate: string;
@@ -27,3 +38,26 @@ export type Group = {
     name: string;
     description?: string;
 }
+
+export type Bill = {
+    guid: string;
+    userGuid: string;
+    groupGuid?: string;
+    name: string;
+    total: number;
+    createDate: string;
+    accountBillNumber: number;
+    items: BillItem[];
+}
+
+export type BillItem = {
+    guid: string;
+    author: {
+        name: string;
+        userGuid: string;
+    },
+    category: BillItemCategory;
+    name: string;
+    price: number;
+}
+

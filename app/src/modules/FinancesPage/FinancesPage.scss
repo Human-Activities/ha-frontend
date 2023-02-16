@@ -1,39 +1,39 @@
-.wrapper {
+.finances-wrapper {
   display: flex;
   justify-content: center;
   padding: 2% 10%;
 }
 
-.activities-container-card {
+.finances-container-card {
   min-width: 100%;
   display: flex;
   flex-wrap: wrap;
   gap: 4%;
 
-  .activity-card {
+  .bill-card {
     width: 46%;
     max-width: 50%;
     margin-bottom: 20px;
     font-size: 12px;
 
-    .activity-card-header {
+    .bill-card-header {
       display: flex;
       flex-direction: row;
       justify-content: space-between;
 
-      .activity-card-author {
+      .bill-card-author {
         padding: 0 10px;
         border-left: 1px solid var(--color-grey);
       }
 
       &.current-user-author {
-        .activity-card-author {
+        .bill-card-author {
           display: none;
         }
       }
     }
 
-    .activity-card-category {
+    .bill-card-category {
       text-align: right;
       padding: 2px 10px;
       border-bottom: 1px solid var(--color-light-grey);

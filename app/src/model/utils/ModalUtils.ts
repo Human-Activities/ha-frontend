@@ -8,44 +8,42 @@ export type HaModalFormParams<T> = {
     onFetch: (value: T) => void;
 }
 
-export type HaModalState<TData = {}> = {
+export type HaModalState = {
     isOpen: boolean;
     open: () => void;
     close: () => void;
-    data?: TData;
     props: HaModalProps;
-    fetcher?: () => any;
+    fetcher?: (value?: any) => any;
 }
 
-type HaModalHookParams<TData> = {
+type HaModalHookParams = {
     title?: string, 
     variant?: ModalVariant,
     form?: HaModalFormParams<any>, 
-    data?: TData,
+    onOk?: (value?: any) => any,
     spinner?: boolean
 }
 
-export const useModal = <TData = {}, >({
+export const useModal = ({
     title, 
     variant,
     form,
-    data,
+    onOk,
     spinner,
-    }: HaModalHookParams<TData>): HaModalState<TData> => 
+}: HaModalHookParams): HaModalState => 
 {
         const [isModalOpen, setModalOpen] = useState(false);
-        const [modalData] = useState(data);
 
         const modalProps: HaModalProps = {
             title: title, 
             variant: variant || 'small',
             onCancel: () => closeModal(),
-            onOk: () => { if (form != null) fetchFormValues() },
+            onOk: () => { form != null && fetchFormValues() },
             loading: spinner,
             maskClosable: false
         }
 
-        const showModal = useCallback(() => setModalOpen(true),[]);
+        const showModal = useCallback(() => setModalOpen(true), []);
         const closeModal = useCallback(() => {
             if (form != null) {
                 form.instance.resetFields();
@@ -65,9 +63,5 @@ export const useModal = <TData = {}, >({
             }
         }
 
-    if (form != null) {    
-        return {isOpen: isModalOpen, open: showModal, close: closeModal, data: modalData, props: modalProps, fetcher: fetchFormValues};
-    } else {
-        return {isOpen: isModalOpen, open: showModal, close: closeModal, data: modalData, props: modalProps};
-    }
+    return {isOpen: isModalOpen, open: showModal, close: closeModal, props: modalProps, fetcher: form ? fetchFormValues : onOk};
 }
