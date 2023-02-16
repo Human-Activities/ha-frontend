@@ -4,8 +4,12 @@
 
     h3 {
         color: black;
-        width: 100%;
         text-align: left;
         padding: 10px;
+    }
+
+    .header-toolbar {
+        gap: 1em; 
+        margin-left: auto;
     }
 }

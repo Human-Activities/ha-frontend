@@ -24,7 +24,7 @@ const HaButton: React.FC<HaButtonProps> = ({variant = 'neutral', ...props}: HaBu
         style={{
             ...props.style, 
             background: props.type === 'primary' || props.type === 'default' ? 'orange' : '',
-            color: variant === 'neutral' ? 'inherit' : variant === 'positive' ? 'var(--color-dark-green)' : 'var(--color-dark-red)',
+            color: variant === 'neutral' ? (props.style && props.style.color ? props.style.color : 'inherit' ) : variant === 'positive' ? 'var(--color-dark-green)' : 'var(--color-dark-red)',
         }} 
         onClick={props.onClick}
         htmlType={props.htmlType || 'button'}

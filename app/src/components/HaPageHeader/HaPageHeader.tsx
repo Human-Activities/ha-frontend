@@ -11,7 +11,7 @@ export const HaPageHeader = ({title, toolbar}: HaPageHeaderProps) => {
     return (
         <Header className="ha-h-flexbox align-center page-header">
             <h3>{title}</h3>
-            <div className="ha-h-flexbox align-center" style={{gap: '.5em'}}>
+            <div className="ha-h-flexbox align-center header-toolbar">
             {
                 toolbar
             }

@@ -27,3 +27,38 @@ export type Group = {
     name: string;
     description?: string;
 }
+
+export enum ToDoListType {
+    Base = 0,
+    Normal = 1,
+    Template = 2
+}
+
+export enum TaskPriority {
+    Low = 0,
+    Medium = 1,
+    High = 2
+}
+
+export type TodoListTemplate = {
+    toDoListGuid: string;
+    name: string;
+    createdDate: string;
+    toDoListType: ToDoListType;
+    isFavorite: boolean;
+    sections: Section[];
+}
+
+export type Section = {
+    sectionGuid: string;
+    name: string;
+    tasks: Task[];
+}
+
+export type Task = {
+    taskGuid: string;
+    createdDate: Date;
+    name: string;
+    isDone: boolean;
+    priority: TaskPriority;
+}
