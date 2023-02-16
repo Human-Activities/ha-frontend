@@ -5,3 +5,4 @@ export * from './NotificationUtils';
 export * from './MenuUtils';
 export * from './StringUtils';
 export * from './ModalUtils';
+export {TodoUtils} from './TodoUtils';

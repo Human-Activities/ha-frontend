@@ -3,16 +3,14 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import './App.scss';
 import { AppHeader } from './components';
 import { AppContextProvider } from './context';
-import { LoginPage, PanelPage, StartingPage, TodoListPage } from './modules';
+import { LoginPage, PanelPage, StartingPage, TodoListForm, TodoListPage } from './modules';
 import { ActivitiesPage } from './modules/ActivitiesPage/ActivitiesPage';
 import { FinancesPage } from './modules/FinancesPage/FinancesPage';
 
 const { Footer } = Layout;
 
 function App() {
-  // just for local testing
-  localStorage.setItem('userGuid', "63ef1ebe-2e40-4818-ad4c-69e5d2885da9");
-
+  
   return (
     <BrowserRouter>
       <AppContextProvider>
@@ -26,6 +24,7 @@ function App() {
               <Route path='/activities' element={<ActivitiesPage />} />
               <Route path='/finances' element={<FinancesPage />} />
               <Route path='/todo-lists' element={<TodoListPage/>} />
+              <Route path='/todo-lists/add' element={<TodoListForm/>}/>
               <Route path='/' element={<StartingPage/>} />
             </Routes>
           <Footer className='main-footer'>&copy; Human Activities</Footer>

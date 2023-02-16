@@ -7,6 +7,8 @@ export type HaSelectProps = {
     onChange: (value: string | string[] | number | number[]) => void;
     disabled?: boolean;
     allowClear?: boolean;
+    defaultValue?: string | string[] | number | number[];
+    style?: React.CSSProperties;
 }
 
 export const HaSelect = ({
@@ -15,6 +17,8 @@ export const HaSelect = ({
     onChange, 
     disabled,
     allowClear,
+    defaultValue,
+    style,
 }: HaSelectProps) => {
     return (
         <Select
@@ -25,7 +29,9 @@ export const HaSelect = ({
                 (input, option) => (option?.label?.toString() ?? '').includes(input)}
             disabled={disabled}
             allowClear={allowClear}
+            style={style}
             showArrow
-         />
+            defaultValue={defaultValue}
+        />
     )
 }

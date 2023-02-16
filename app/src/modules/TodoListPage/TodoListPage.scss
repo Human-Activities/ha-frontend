@@ -1,0 +1,86 @@
+.list-item {
+    background-color: white;
+    border-radius: 10px;
+    border: solid 2px gray;
+    box-shadow: 0 0 2px 1px gray;
+    padding-left: 1em;
+    padding-right: .5em;
+    height: 3em;
+    max-height: 3em;
+    transition: all 250ms ease-in-out;
+    &.expanded {
+        height: 18em;
+        max-height: 18em;
+        padding-top: .5em;
+    }
+}
+
+.list-item-header {
+    gap: 1.5em;
+    height: 3em;
+    &.expanded {
+        border-bottom: solid 1px gray;
+        padding-bottom: .5em;
+    }
+}
+
+.todo-wrapper {
+    height: calc(39em - 1px);
+    overflow-y: auto;
+}
+
+.todos-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(35em,1fr));
+}
+
+.item-toolbar {
+    gap: 1em;
+    margin-left: auto;
+}
+
+.star-button {
+    display: flex;
+    align-items: center;
+}
+
+.tasks-list {
+    list-style-type: "\1D941";
+    padding: 0 5em;
+}
+
+.done-list {
+    list-style-type: "\2713";
+    padding: 0 5em;
+}
+
+.overview-container {
+    --max-lines: 6;
+    --line-height: 2;
+    height: 100%;
+    max-height: calc(var(--max-lines) * 1em * var(--line-height));
+    line-height: var(--line-height);
+    width: 100%;
+    align-items: flex-start;
+    overflow: hidden;
+    position: relative;
+}
+
+.overview-container::before {
+    position: absolute;
+    bottom: 0;
+    padding: 0;
+    content: "";
+    height: calc(3em * var(--line-height));
+    width: 100%;
+    pointer-events: none;
+    background: linear-gradient(to bottom, transparent, white);
+}
+
+.form-card {
+    background-color: white;
+    border-radius: 10px;
+    border: solid 2px gray;
+    box-shadow: 0 0 2px 1px gray;
+    margin: 3em;
+}
