@@ -5,7 +5,7 @@ import { ApiURL, RequestStatus } from "../model/utils";
 export class TodoListService {
     public static async getTodoLists(groupGuid?: string): Promise<TodoListTemplate[] | null> {
         try {
-            const { data } = await axios.get(`${ApiURL}todolists/get-all/${guid ? guid : ''}`);
+            const { data } = await axios.get(`${ApiURL}todolists/get-all/${groupGuid ? groupGuid : ''}`);
             return data as TodoListTemplate[];
         } catch(err: any) {
             return null;
@@ -23,7 +23,7 @@ export class TodoListService {
 
     public static async getTemplates(groupGuid?: string): Promise<TodoListTemplate[] | null> {
         try {
-            const { data } = await axios.get(`${ApiURL}todolists/get-templates/${guid ? guid : ''}`);
+            const { data } = await axios.get(`${ApiURL}todolists/get-templates/${groupGuid ? groupGuid : ''}`);
             return data as TodoListTemplate[];
         } catch (err) {
             return null;

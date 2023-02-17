@@ -26,12 +26,19 @@ export const SideMenu = ({ onExpand }: SideMenuProps) => {
   const [groupFormInstance] = useForm();
 
   const onCreateGroup = async (value: Group) => {
-    const { status, data } = await GroupService.create(value);
-    if (status === RequestStatus.SUCCESS) {
-      const { message } = data;
+    const result = await GroupService.create(value);
+    if (result != null) {
       closeAddGroupModal();
-      getGroups();
-      notify("success", "Creation successful", message);
+      getGroups().then(val =>
+        {
+          const submenu = submenuKeys.map<SubmenuElement>((key) => {
+            const name = t(`submenu.${key}`);
+            return { key, name };
+          });
+          const menu = MenuUtils.generateMenuProviderForPanel(val, submenu, () => showAddGroupModal());
+          setMenuProvider(menu);
+      });
+      notify("success", "Creation successful", "Group created successfully!");
     }
   };
 
