@@ -40,25 +40,26 @@ export type Group = {
 }
 
 export type Bill = {
-    guid: string;
+    billGuid: string;
     userGuid: string;
     groupGuid?: string;
     name: string;
     total: number;
     createDate: string;
     accountBillNumber: number;
-    items: BillItem[];
+    billItems: BillItem[];
 }
 
 export type BillItem = {
-    guid: string;
+    billItemGuid: string;
     author: {
         name: string;
         userGuid: string;
     },
+    categoryId: number;
     category: BillItemCategory;
     name: string;
-    price: number;
+    totalValue: number;
 }
 
 

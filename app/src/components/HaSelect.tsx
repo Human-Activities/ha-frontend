@@ -9,6 +9,7 @@ export type HaSelectProps = {
     allowClear?: boolean;
     defaultValue?: string | string[] | number | number[];
     style?: React.CSSProperties;
+    className?: string;
 }
 
 export const HaSelect = ({
@@ -18,6 +19,7 @@ export const HaSelect = ({
     disabled,
     allowClear,
     defaultValue,
+    className,
     style,
 }: HaSelectProps) => {
     return (
@@ -31,6 +33,7 @@ export const HaSelect = ({
             allowClear={allowClear}
             style={style}
             showArrow
+            className={className}
             defaultValue={defaultValue}
         />
     )

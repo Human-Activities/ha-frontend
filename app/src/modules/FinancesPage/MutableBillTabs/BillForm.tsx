@@ -18,32 +18,32 @@ export const CreateBillForm = <T extends BillFormValues, >({ bill, updateBill }:
 
     useEffect(() => {
         updateBill(values);
-    }, [values, values.name, values.items])
+    }, [values, values.name, values.billItems])
 
     const addItem = useCallback(() => {
         setValues(prevState => {
-            const i = (values.items?.length ?? 0) + 1;
-            return {...prevState, items: [...values.items, { number: i, userGuid }]}
+            const i = (values.billItems?.length ?? 0) + 1;
+            return {...prevState, billItems: [...values.billItems, { number: i, userGuid }]}
         });
-    }, [values.items, setValues]);
+    }, [values.billItems, setValues]);
     
     const removeItem = useCallback((item: CreateBillItem) => {
         setValues(prevState => {
-            const items = prevState.items.filter(e => e.number !== item.number)
+            const items = prevState.billItems.filter(e => e.number !== item.number)
                 .map((e, i) => ({ ...e, number: i + 1 }));
-            return { ...prevState, items };
+            return { ...prevState, billItems: items };
         });
-    }, [values.items, setValues]);
+    }, [values.billItems, setValues]);
 
     const changeItem = useCallback((item: CreateBillItem) => {
         setValues((prevState) => {
-            const items = [...prevState.items];
+            const items = [...prevState.billItems];
             const index = items.findIndex(element => element.number == item.number);
             items[index].name = item.name;
-            items[index].price = item.price;
-            return {...prevState, items}
+            items[index].totalValue = item.totalValue;
+            return {...prevState, billItems: items}
         });
-    }, [values.items, setValues]);
+    }, [values.billItems, setValues]);
 
     const changeBillName = useCallback((value: string) => {
         setValues((prevState) => {
@@ -53,7 +53,7 @@ export const CreateBillForm = <T extends BillFormValues, >({ bill, updateBill }:
 
     const resetBill = () => {
         setValues((prevState) => {
-            return {...prevState, name: "", items: [], categoryGuid: ""};
+            return {...prevState, name: "", billItems: [], categoryGuid: ""};
         });
     }
 
@@ -62,7 +62,7 @@ export const CreateBillForm = <T extends BillFormValues, >({ bill, updateBill }:
             <BillHeader billName={values.name} billUserGuid={values.userGuid} onAddItem={addItem} resetBill={resetBill} changeBillName={changeBillName}/>
             <hr />
             <BillsListHeader />
-            {values.items?.map((item) => {
+            {values.billItems?.map((item) => {
                 return <BillElement key={item.number} item={item} onChange={changeItem} onDelete={removeItem} /> 
             })}
         </div>
@@ -105,6 +105,7 @@ const BillsListHeader = () => {
             <span>No.</span>
             <span>Name</span>
             <span>Price</span>
+            <span>Category</span>
         </div>
     )
 }
@@ -131,14 +132,23 @@ const BillElement = ({item, onChange, onDelete}: BillElementProps) => {
             <InputNumber 
                 className="bill-item--price"
                 controls={false}
-                value={item.price || 0}
-                onChange={(e) => onChange({...item, price: e || 0})} 
+                value={item.totalValue || 0}
+                onChange={(e) => onChange({...item, totalValue: e || 0})} 
                 disabled={disabled}
                 />
             <HaSelect 
+                className="bill-item--category"
                 disabled={disabled} 
-                options={billItemCategories.map(item => ({value: item.id, label: item.name}))} 
-                onChange={(value) => onChange({...item, categoryId: value as number})}/>
+                options={billItemCategories.map(c => ({value: c.id, label: c.name}))}
+                defaultValue={item.categoryId}
+                onChange={(value) => {
+                    console.log(value);
+                    const newItem = item;
+                    newItem.categoryId = value as number;
+                    onChange(newItem)
+                    console.log(item)
+                }
+                    }/>
             {!disabled && (
                 <HaButton onClick={() => onDelete(item)} variant="negative" icon={<AiOutlineClose />} />
             )}

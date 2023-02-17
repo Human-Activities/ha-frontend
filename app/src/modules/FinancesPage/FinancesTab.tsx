@@ -11,6 +11,7 @@ import "./FinancesPage.scss";
 export type TabProps = {
     bills: Bill[];
     openBillDetails: (bill: Bill) => void;
+    refreshGrid: () => void;
 }
 
 type BillBtnGroupProps = {
@@ -19,7 +20,7 @@ type BillBtnGroupProps = {
     deleteDisabled: boolean;
 }
 
-export const FinancesTab = ({ bills, openBillDetails }: TabProps) => {
+export const FinancesTab = ({ bills, openBillDetails, refreshGrid }: TabProps) => {
     const { user: { userGuid: loggedUserGuid } } = useContext(AppContext) as AppContextType;
     const [ctaBill, setCtaBill] = useState<Bill | null>();
     const deleteBillModal = useDeleteBillModal();
@@ -39,7 +40,7 @@ export const FinancesTab = ({ bills, openBillDetails }: TabProps) => {
                             className="bill-card"
                             headStyle={{background: "#ffd582", opacity: 0.8, textAlign: "left", paddingLeft: "10%"}}
                             bodyStyle={{background: "rgba(255, 255, 255, 0.8)", textAlign: "left"}}
-                            key={bill.guid} 
+                            key={bill.billGuid} 
                             title={<Header {...bill} />}
                             extra={
                                 <BillBtnGroup 
@@ -54,11 +55,11 @@ export const FinancesTab = ({ bills, openBillDetails }: TabProps) => {
                                     }}
                                 />
                             }>
-                            {bill.items.map(item => <BillListItem {...item} />)}
+                            {bill.billItems.map(item => <BillListItem {...item} />)}
                         </Card>
                     )
                 })}
-                {ctaBill && <DeleteBillModal modal={deleteBillModal} bill={ctaBill} />}
+                {ctaBill && <DeleteBillModal modal={deleteBillModal} bill={ctaBill} refreshGrid={refreshGrid}/>}
             </div>
         </div>
     );
@@ -89,9 +90,9 @@ const BillBtnGroup = ({ openDeleteModal, openDetailsTab, deleteDisabled }: BillB
     )
 }
 
-const BillListItem = ({ name, price }: BillItem) => {
+const BillListItem = ({ name, totalValue }: BillItem) => {
     // todo: consider currency depending on set locale
     return (
-        <p>{`* ${name}: ${price.toFixed(2)}$`}</p>
+        <p>{`* ${name}: ${totalValue.toFixed(2)}$`}</p>
     )
 }

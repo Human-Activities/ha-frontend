@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useContext, useEffect, useState } from "react";
 import { Tabs } from "antd";
 import { PanelPage } from "../PanelPage";
 import { ActivitiesTab } from "./ActivitiesTab";
@@ -11,52 +11,54 @@ import "./ActivitiesPage.scss";
 import { TabItem } from "../../model/types.app";
 import { useParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { AppContext, AppContextType } from "../../context";
 
 type ActivitiesType = "friends" | "user" | "group";
 
 export const ActivitiesPage = () => {
     const { t } = useTranslation("activities");
     const { groupGuid } = useParams();
+    const { user: { userGuid }} = useContext(AppContext) as AppContextType;
     const [activities, setActivities] = useState<Activity[]>([]);
-    const [selectedTab, setSelectedTab] = useState<ActivitiesType>("friends");
-    const [selectedGroupGuid, setSelectedGroupGuid] = useState<string>("");
+    const [selectedTab, setSelectedTab] = useState<ActivitiesType>(groupGuid ? "group" : "user");
+    const [selectedGroupGuid, setSelectedGroupGuid] = useState<string>();
     const { modal, form } = useCreateActivityModal();
 
     const defaultTabs: TabItem<ActivitiesType>[] = [
-        {
-            label: "Friends & Mine",
-            key: "friends",
-            children: <ActivitiesTab activities={selectedTab === "friends" ? activities : []}/>
-        },
+        // {
+        //     label: "Friends & Mine",
+        //     key: "friends",
+        //     children: <ActivitiesTab activities={selectedTab === "friends" ? activities : []}/>
+        // },
         {
             label: "Mine",
             key: "user",
-            children: <ActivitiesTab activities={selectedTab === "user" ? activities : []}/>
+            children: <ActivitiesTab activities={activities}/>
         }
     ];
 
     const groupTab: TabItem<ActivitiesType> = { 
         label: "Group", 
         key: "group", 
-        children: <ActivitiesTab activities={selectedTab === "group" ? activities : []} /> 
+        children: <ActivitiesTab activities={activities} /> 
     };
 
     const fetchActivities = useCallback((key: ActivitiesType) => {
         switch(key) {
-            case "friends": 
-                getActivities().then(response => {
-                    setSelectedTab("friends");
-                    setActivities(response)
-                });
-            break;
+            // case "friends": 
+            //     getActivities(userGuid, selectedGroupGuid).then(response => {
+            //         setSelectedTab("friends");
+            //         setActivities(response)
+            //     });
+            // break;
             case "user":
-                getActivities(true).then(response => {
+                getActivities(userGuid).then(response => {
                     setSelectedTab("user");
                     setActivities(response)
                 });
             break;
             case "group":
-                getGroupActivities(selectedGroupGuid).then(response => {
+                getGroupActivities(userGuid, selectedGroupGuid).then(response => {
                     setSelectedTab("group");
                     setActivities(response)
                 });

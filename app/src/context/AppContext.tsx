@@ -44,7 +44,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
 
     useEffect(() => {
         axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
-    })
+    }, []);
 
     useEffect(() => {
         const currentPath = PathManager.getCurrentStateByPath();
@@ -98,7 +98,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
             const billItemCategories = await getBillItemCategories();
 
             setAppData((prevData) => ({...prevData, activityCategories, billItemCategories}));
-            localStorage.setItem("appData", JSON.stringify(appData));
+            localStorage.setItem("appData", JSON.stringify({...appData, activityCategories, billItemCategories}));
         } catch(error) {
             notify('error', 'Error', (error as any).message);
         }
@@ -115,12 +115,13 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     },[]);
 
     const logout = useCallback(() => {
+        navigate("/login");
+
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('userGuid');
         localStorage.removeItem('appData');
-
-        navigate("/login");
+        axios.defaults.headers.common.Authorization = undefined;
     }, [])
 
     const login = useCallback(async (loginTO: Login) => {

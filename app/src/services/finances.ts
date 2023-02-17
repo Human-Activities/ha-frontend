@@ -81,11 +81,12 @@ export async function deleteBill(billGuid: string) {
 }
 
 export async function createBill(bill: CreateBillValues) {
+    //bill.items.forEach(item => item.number = undefined)
     const { data } = await axios.post(`${ApiURL}bills/create`, bill);
     return data;
 }
 
-export async function updateBill(bill: UpdateBillValues) {
-    const { data } = await axios.put(`${ApiURL}bills/edit/${bill.billGuid}`, bill);
+export async function updateBill(bill: UpdateBillValues): Promise<Bill> {
+    const { data } = await axios.put(`${ApiURL}bills/edit`, bill);
     return data;
 }

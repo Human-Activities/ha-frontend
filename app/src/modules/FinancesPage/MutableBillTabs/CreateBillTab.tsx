@@ -15,7 +15,7 @@ type Props = {
 
 export const CreateBillTab = ({ groupGuid, closeTab }: Props) => {
     const { user: { userGuid } } = useContext(AppContext) as AppContextType;
-    const [bill, setBill] = useState<CreateBillValues>({ userGuid, groupGuid, items: [], name: "" })
+    const [bill, setBill] = useState<CreateBillValues>({ userGuid, groupGuid, billItems: [], name: "" })
 
     return (
         <>

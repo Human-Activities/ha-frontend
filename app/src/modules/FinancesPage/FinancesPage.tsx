@@ -44,8 +44,8 @@ export const FinancesPage = () => {
     const getBillDetailsTab = (bill: Bill): TabItem<FinancesTabType> => {
         return {
             label: bill.name,
-            key: bill.guid,
-            children: <UpdateBillTab closeTab={() => removeTab(bill.guid)} billReference={bill} />,
+            key: bill.billGuid,
+            children: <UpdateBillTab refreshGrid={() => fetchBills(previousTab)} closeTab={() => removeTab(bill.billGuid)} billReference={bill} />,
         }
     }
 
@@ -70,10 +70,10 @@ export const FinancesPage = () => {
     }, [tabsStore, setTabsStore, createBillTab, setSelectedTab]);
 
     const openBillDetailsTab = useCallback((bill: Bill) => {
-        if (!tabsStore.find(tab => tab.key === bill.guid)) {
+        if (!tabsStore.find(tab => tab.key === bill.billGuid)) {
             setTabsStore([...tabsStore, getBillDetailsTab(bill)]);
             setPreviousTab(selectedTab);
-            setSelectedTab(bill.guid);
+            setSelectedTab(bill.billGuid);
         }
     }, [tabsStore, setTabsStore, getBillDetailsTab, setSelectedTab]);
 
@@ -128,7 +128,7 @@ export const FinancesPage = () => {
             if (tab.key === "user" || tab.key === "group") {
                 return {
                 ...tab,
-                children: <FinancesTab bills={bills} openBillDetails={openBillDetailsTab} />,
+                children: <FinancesTab bills={bills} openBillDetails={openBillDetailsTab} refreshGrid={() => fetchBills(selectedTab)} />,
                 };
             } else {
                 return tab;

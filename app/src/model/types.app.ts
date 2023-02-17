@@ -20,25 +20,25 @@ export type TabItem<T> = {
 }
 
 export type CreateBillItem = {
-    number: number;
+    number?: number;
     name: string;
     categoryId: number;
     userGuid: string;
-    price: number;
+    totalValue: number;
 };
 
 export interface CreateBillValues {
     name: string;
     userGuid: string;
     groupGuid?: string;
-    items: CreateBillItem[];
+    billItems: CreateBillItem[];
 };
 
 export interface UpdateBillValues {
     userGuid: string;
     billGuid: string;
     name: string;
-    items: CreateBillItem[];
+    billItems: CreateBillItem[];
 };
 
 export type BillFormValues = CreateBillValues | UpdateBillValues;
