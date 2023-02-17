@@ -42,3 +42,18 @@ export interface UpdateBillValues {
 };
 
 export type BillFormValues = CreateBillValues | UpdateBillValues;
+
+export interface CreateActivityValues {
+    name: string;
+    userGuid: string;
+    groupGuid?: string;
+    description: string;
+    isPublic: boolean;
+    categoryId?: number;
+}
+
+export interface UpdateActivityValues extends CreateActivityValues {
+   activityGuid: string;
+}
+
+export type ActivityFormValues = CreateActivityValues | UpdateActivityValues;

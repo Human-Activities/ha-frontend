@@ -1,6 +1,8 @@
 import axios from "axios";
 import { Activity } from "../model/types.api";
+import { UpdateActivityValues } from "../model/types.app";
 import { ApiURL } from "../model/utils";
+import { CreateActivityValues } from "../modules/ActivitiesPage/CreateActivity/CreateActivityForm";
 
 export async function getActivities(userGuid: string): Promise<Activity[]> {
     const { data } = await axios.get(`${ApiURL}activities/get/${userGuid}`);
@@ -37,13 +39,13 @@ export async function getGroupActivities(userGuid: string, groupGuid: string): P
     // ];
 }
 
-export async function createActivity(activity: Activity) {
+export async function createActivity(activity: CreateActivityValues) {
     const { data } = await axios.post(`${ApiURL}activities/create`, activity);
     return data;
 }
 
-export async function updateActivity(activity: Activity) {
-    const { data } = await axios.put(`${ApiURL}activities/edit/${activity.guid}`, activity);
+export async function updateActivity(activity: UpdateActivityValues) {
+    const { data } = await axios.put(`${ApiURL}activities/edit/${activity.activityGuid}`, activity);
     return data;
 }
 

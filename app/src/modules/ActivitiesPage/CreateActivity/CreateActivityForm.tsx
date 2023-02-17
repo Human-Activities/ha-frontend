@@ -1,53 +1,54 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Checkbox, Form, FormInstance, Input } from "antd"
 import { HaSelect, HaTooltipIcon } from "../../../components";
 import "./CreateActivity.scss";
 import { useTranslation } from "react-i18next";
-
-export type CreateActivityValues = {
-    name: string;
-    categories: number[];
-    description: string;
-    isPublic: boolean;
-}
+import { ActivityFormValues, UpdateActivityValues } from "../../../model/types.app";
+import { AppContext, AppContextType } from "../../../context";
+import TextArea from "antd/es/input/TextArea";
 
 type CreateActivityFormProps = {
-    form: FormInstance<CreateActivityValues>;
+    form: FormInstance<ActivityFormValues>;
     isGroupActivity?: boolean;
+    activity?: UpdateActivityValues;
 }
 
-export const CreateActivityForm = ({ form, isGroupActivity }: CreateActivityFormProps) => {
+export const CreateActivityForm = ({ form, isGroupActivity, activity }: CreateActivityFormProps) => {
     const { t } = useTranslation("activities");
+    const { appData: { activityCategories }} = useContext(AppContext) as AppContextType;
 
     return (
-        <div className="formWrapper">
-            <Form form={form} layout="vertical" colon={false} labelCol={{ span: 10 }} className="createActivityForm">
+        <div className="activity-form-wrapper">
+            <Form form={form} layout="vertical" colon={false} labelCol={{ span: 10 }} className="createActivityForm" initialValues={activity}>
                 <Form.Item
                     label={t("details.name")}
                     name="name"
                     rules={[ {required: true, message: t("details.validation.name"), type: 'string', whitespace: true}]}
                 >
-                    <Input id="name"/>
+                    <Input id="name" />
                 </Form.Item>
                 <Form.Item
                     label={t("details.category")}
-                    name="category"
+                    name="categoryId"
                     rules={[ {required: false }]}
                 >
-                    <HaSelect  options={[{value: 1, label: "test 1"}, {value: 2, label: "test 2"}]} multi onChange={(value) => console.log(value)}/>
+                    <HaSelect 
+                        defaultValue={activity?.categoryId} 
+                        options={activityCategories.map(c => ({value: c.id, label: c.name}))} 
+                        onChange={value => form.setFieldValue("categoryId", value as number)}/>
                 </Form.Item>
                 <Form.Item
                     label={t("details.description")}
                     name="description"
                     rules={[ {required: true, message: t("details.validation.description"), type: 'string', whitespace: true}]}
                 >
-                    <Input id="description"/>
+                    <TextArea rows={2} id="description" />
                 </Form.Item>
                 <Form.Item
                     name="isPublic"
                     valuePropName="checked"
                 >
-                    <Checkbox name="isPublic" id="isPublic" defaultChecked={isGroupActivity} disabled={isGroupActivity}>
+                    <Checkbox name="isPublic" id="isPublic" defaultChecked={activity?.isPublic || isGroupActivity} disabled={isGroupActivity}>
                         <CheckboxLabel label={t("details.share.label")} tooltip={t("details.share.tooltip")}/>
                     </Checkbox>
                 </Form.Item>

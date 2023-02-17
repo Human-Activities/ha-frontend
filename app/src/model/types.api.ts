@@ -10,14 +10,18 @@ export type ActivityCategory = {
 }
 
 export type Activity = {
-    guid: number;
-    title: string;
+    activityGuid: string;
+    name: string;
     category: ActivityCategory;
     description: string;
-    author: string;
+    author: { 
+        name: string;
+        userGuid: string;
+    };
     createdDate: string;
     userGuid: string;
-    isPrivate: boolean;
+    groupGuid?: string;
+    isPublic: boolean;
 }
 
 export type Login = {

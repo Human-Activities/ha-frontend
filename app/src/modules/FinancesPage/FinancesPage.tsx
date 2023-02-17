@@ -128,6 +128,7 @@ export const FinancesPage = () => {
             if (tab.key === "user" || tab.key === "group") {
                 return {
                 ...tab,
+                label: tab.key === "user" ? "My finances" : "Group finances",
                 children: <FinancesTab bills={bills} openBillDetails={openBillDetailsTab} refreshGrid={() => fetchBills(selectedTab)} />,
                 };
             } else {

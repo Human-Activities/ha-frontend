@@ -9,16 +9,18 @@ import { DeleteActivityModal, useDeleteActivityModal } from "./DeleteActivity/De
 
 export type TabProps = {
     activities: Activity[];
+    openActivityDetailsTab: (activity: Activity) => void;
+    refreshGrid: () => void;
 }
 
 type ActivityBtnGroupProps = {
     cta: () => void;
-    openEditModal?: (activity: Activity) => void;
+    openActivityDetailsTab: () => void;
     openDeleteModal: () => void;
 }
 
-export const ActivitiesTab = ({ activities }: TabProps) => {
-    const { user: { userGuid: loggeduserGuid } } = useContext(AppContext) as AppContextType;
+export const ActivitiesTab = ({ activities, openActivityDetailsTab, refreshGrid }: TabProps) => {
+    const { user: { userGuid } } = useContext(AppContext) as AppContextType;
     const [ctaActivity, setCtaActivity] = useState<Activity | null>();
     const deleteActivityModal = useDeleteActivityModal();
 
@@ -34,11 +36,20 @@ export const ActivitiesTab = ({ activities }: TabProps) => {
                     return (
                         <Card 
                             className="activity-card"
-                            headStyle={{background: activity.userGuid === loggeduserGuid ? "#ffd582" : "#ffe1a5", opacity: 0.8, textAlign: "left", paddingLeft: "10%"}}
+                            headStyle={{background: activity.userGuid === userGuid ? "#ffd582" : "#ffe1a5", opacity: 0.8, textAlign: "left", paddingLeft: "10%"}}
                             bodyStyle={{background: "rgba(255, 255, 255, 0.8)", textAlign: "left"}}
-                            key={activity.guid} 
+                            key={activity.activityGuid} 
                             title={<ActivityHeader {...activity} />} 
-                            extra={activity.userGuid === loggeduserGuid && <ActivityBtnGroup openDeleteModal={deleteActivityModal.open} cta={() => setCtaActivity(activity)} />} 
+                            extra={
+                                activity.userGuid === userGuid && 
+                                <ActivityBtnGroup 
+                                    openDeleteModal={deleteActivityModal.open}
+                                    openActivityDetailsTab={() => {
+                                        setCtaActivity(activity);
+                                        openActivityDetailsTab(activity);
+                                    }} 
+                                    cta={() => setCtaActivity(activity)} />
+                            } 
                         >
                             <h3 className="activity-card-category">{activity.category.name}</h3>
                             <p className="activity-card-description">{activity.description}</p>
@@ -51,21 +62,21 @@ export const ActivitiesTab = ({ activities }: TabProps) => {
     );
 }
 
-const ActivityHeader = ({title, author, userGuid}: Activity) => {
+const ActivityHeader = ({name, author, userGuid}: Activity) => {
     const { user: { userGuid: loggeduserGuid } } = useContext(AppContext) as AppContextType;
 
     return (
         <div className={cx("activity-card-header", userGuid === loggeduserGuid && "current-user-author")}>
-            <span className="activity-card-title">{title}</span>
-            <span className="activity-card-author">{author}</span>
+            <span className="activity-card-title">{name}</span>
+            <span className="activity-card-author">{author.name}</span>
         </div>
     )
 }
 
-const ActivityBtnGroup = ({ cta, openDeleteModal, openEditModal }: ActivityBtnGroupProps) => {
+const ActivityBtnGroup = ({ cta, openDeleteModal, openActivityDetailsTab }: ActivityBtnGroupProps) => {
     return (
         <div className="ha-btn-group">
-            <HaButton variant="positive" icon={<FaRegEdit />} onClick={() => {}}></HaButton>
+            <HaButton variant="positive" icon={<FaRegEdit />} onClick={() => openActivityDetailsTab?.()}></HaButton>
             <HaButton 
                 variant="negative" 
                 icon={<FaRegTrashAlt />} 
