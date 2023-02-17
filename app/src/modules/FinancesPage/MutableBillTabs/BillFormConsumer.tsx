@@ -36,6 +36,7 @@ export const CreateBillFormConsumer = ({bill, onClose}: BillFormConsumerProps<Cr
                 try {
                     await createBill({...bill, billItems: items});
                     notify('success', 'Success', 'Bill created')
+                    onClose();
                 } catch (err) {
                     notify('error', 'Error', (err as any).message);
                 }

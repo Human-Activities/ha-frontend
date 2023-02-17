@@ -20,18 +20,20 @@ export const useDeleteBillModal = (): HaModalState => {
 }
 
 export const DeleteBillModal = ({ bill, modal, refreshGrid }: DeleteBillProps) => {
-    const { isOpen, props } = modal;
-    const footer = useDeleteBillModalFooter(props);
+    const { isOpen, close, props } = modal;
 
     const deleteBillAndRefreshGrid = useCallback(async () => {
         try {
             await deleteBill(bill.billGuid);
             refreshGrid();
-            notify("success", "Succes", "Bill deleted")
+            notify("success", "Succes", "Bill deleted");
+            close();
         } catch(err) {
-            notify("success", "Error", "Could not delete bill")
+            notify("success", "Error", "Could not delete bill");
         }
     }, [bill.billGuid]);
+
+    const footer = useDeleteBillModalFooter({ ...props, onOk: deleteBillAndRefreshGrid});
 
     return(
         <HaModal 
@@ -50,5 +52,5 @@ export const DeleteBillModal = ({ bill, modal, refreshGrid }: DeleteBillProps) =
 const useDeleteBillModalFooter = ({ onOk, onCancel }: HaModalProps) => 
     [
         <HaButton key="cancel" type="primary" onClick={onCancel} label='Cancel'/>,
-        <HaButton key="submit" type="primary" variant="negative" onClick={onOk} label='Delete' htmlType="submit"/>
+        <HaButton key="submit" type="primary" variant="negative" onClick={() => onOk?.()} label='Delete'/>
     ];
