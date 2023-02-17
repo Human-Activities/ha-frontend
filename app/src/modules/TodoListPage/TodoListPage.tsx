@@ -7,27 +7,24 @@ import { Dropdown, MenuProps, Space, Typography } from 'antd';
 import { DownOutlined } from '@ant-design/icons';
 import { TodoListTemplate, ToDoListType } from '../../model/types.api';
 import { TodoListService } from '../../services';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { notify, RequestStatus } from '../../model/utils';
 
-type TodoListPageProps = {
-    isGroup?: boolean;
-    guid?: string;
-}
 
-export const TodoListPage = ({isGroup, guid}: TodoListPageProps) => {
+export const TodoListPage = () => {
     
     const [dataProvider, setDataProvider] = useState<TodoListTemplate[]>([] as TodoListTemplate[]);
     const navigate = useNavigate();
+    const { state } = useLocation();
 
     const getItems = async() => {
-        const data = await TodoListService.getTodoLists();
+        const data = await TodoListService.getTodoLists(state != null ? state.groupGuid : '');
         if (data != null)
         setDataProvider(data);
     }
 
     const addTodoList = () => {
-        navigate("/todo-lists/add");
+        navigate(`${state != null && state.groupGuid ? `/groups/${state.groupGuid}` : ''}/todo-lists/add`, {state: {groupGuid: state != null ? state.groupGuid : ''}});
     }
 
     useEffect(() => {
@@ -79,7 +76,7 @@ export const TodoListPage = ({isGroup, guid}: TodoListPageProps) => {
     }
     
     const editItem = (guid: string) => {
-        navigate("/todo-lists/add", {state: {todoListGuid: guid, isEditView: true}});
+        navigate(`${state != null && state.groupGuid ? `/groups/${state.groupGuid}` : ''}/todo-lists/add`, {state: {todoListGuid: guid, isEditView: true, groupGuid: state != null ? state.groupGuid : ''}});
     }
 
     const sortList = (key: string, order: string) => {

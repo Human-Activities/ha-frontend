@@ -23,7 +23,7 @@ export const TodoListForm = () => {
     const [selectedTodoListGuid, setSelectedTodoListGuid] = useState<string>(state?.todoListGuid as string);
 
     const getTemplates = async() => {
-        const data = await TodoListService.getTemplates();
+        const data = await TodoListService.getTemplates(state != null ? state.groupGuid : '');
         if (data != null && data.length > 0) {
             setTemplates(data);
         }
@@ -126,6 +126,7 @@ export const TodoListForm = () => {
                     return;
                 }
             } else {
+                todoList.groupGuid = state != null ? state.groupGuid : null;
                 const result = await TodoListService.createTodoList(todoList);
                 if (result != null) {
                     setTodoList(result);
@@ -193,7 +194,7 @@ export const TodoListForm = () => {
                         }
                     </div>
                     <div className="ha-h-flexbox" style={{gap: '1em', width: '10em'}}>
-                        <HaButton size="large" type='default' label="Cancel" onClick={() => navigate("/todo-lists")} />
+                        <HaButton size="large" type='default' label="Cancel" onClick={() => navigate(`${state != null && state.groupGuid ? `/groups/${state.groupGuid}` : ''}/todo-lists`)} />
                         <HaButton size="large" type='primary' label="Save" onClick={async() => await saveTodoList()}/>
                     </div>
                 </>

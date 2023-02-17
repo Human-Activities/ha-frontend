@@ -3,9 +3,9 @@ import { TodoListTemplate, ToDoListType } from "../model/types.api";
 import { RequestStatus } from "../model/utils";
 
 export class TodoListService {
-    public static async getTodoLists(guid?: string): Promise<TodoListTemplate[] | null> {
+    public static async getTodoLists(groupGuid?: string): Promise<TodoListTemplate[] | null> {
         try {
-            const { data } = await axios.get(`https://localhost:7124/api/todolists/get-all/${guid ? guid : ''}`);
+            const { data } = await axios.get(`https://localhost:7124/api/todolists/get-all/${groupGuid ? groupGuid : ''}`);
             return data as TodoListTemplate[];
         } catch(err: any) {
             return null;
@@ -21,9 +21,9 @@ export class TodoListService {
         }
     }
 
-    public static async getTemplates(guid?: string): Promise<TodoListTemplate[] | null> {
+    public static async getTemplates(groupGuid?: string): Promise<TodoListTemplate[] | null> {
         try {
-            const { data } = await axios.get(`https://localhost:7124/api/todolists/get-templates/${guid ? guid : ''}`);
+            const { data } = await axios.get(`https://localhost:7124/api/todolists/get-templates/${groupGuid ? groupGuid : ''}`);
             return data as TodoListTemplate[];
         } catch (err) {
             return null;

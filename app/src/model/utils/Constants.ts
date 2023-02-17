@@ -9,5 +9,5 @@ export enum RequestStatus {
   ERROR = "error",
 }
 
-export const submenuKeys = ["activities", "todo-lists", "finances", "events"];
+export const submenuKeys = ["activities", "todo-lists", "finances"];
 

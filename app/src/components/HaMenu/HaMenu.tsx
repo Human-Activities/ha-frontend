@@ -1,9 +1,7 @@
 import { Avatar, Tooltip } from "antd";
 import React, { useContext, useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AppContext, AppContextType } from "../../context";
 import { MenuItem, MenuUtils, StringUtils, SubMenuLink } from "../../model/utils";
-import { Trans, useTranslation } from "react-i18next";
 import HaButton from "../HaButton";
 import "./HaMenu.scss";
 
@@ -28,24 +26,34 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
 
   useEffect(() => {
     if (provider != null && provider.length > 0) {
-      const activeItem = provider.find((i) => MenuUtils.isMenuItemInPath(i, location.pathname)) || provider[0];
-      if (activeItem != null) {
-        activeItem.active = true;
-        if (activeItem.submenuList && activeItem.submenuList.length > 0) {
-          const activeLink = MenuUtils.findSubMenuLinkInPath(activeItem.submenuList, location.pathname);
-          if (activeLink == null) {
-            onSubMenuClick(activeItem.submenuList[0]);
-          } else {
-            activeLink.active = true;
+      let selected;
+      for(let i of provider){
+        const isActive = MenuUtils.isMenuItemInPath(i, location.pathname);
+        if (isActive != null) {
+          if (i.submenuList && i.submenuList.length > 0) {
+            const activeLink = MenuUtils.findSubMenuLinkInPath(i.submenuList, location.pathname);
+            if (activeLink != null) {
+              i.active = true;
+              activeLink.active = true;
+              selected = i;
+              break;
+            }
           }
         }
-        setSelectedItem(activeItem);
-
-        if (onExpand) {
-          setSubMenuMounted(true);
-          setSubMenuVisible(true);
-          onExpand(true);
+      }
+      
+      if (selected == null) {
+        selected = provider[0];
+        if (selected.submenuList && selected.submenuList.length > 0) {
+          onSubMenuClick(selected.submenuList[0]);
         }
+      }
+      setSelectedItem(selected);
+
+      if (onExpand) {
+        setSubMenuMounted(true);
+        setSubMenuVisible(true);
+        onExpand(true);
       }
     }
   }, [provider]);
@@ -100,7 +108,7 @@ export const HaMenu = ({ provider, onExpand, mode }: HaMenuProps) => {
   };
 
   const onSubMenuClick = (activeLink: SubMenuLink) => {
-    navigate(activeLink.path);
+    navigate(activeLink.path, {state: {groupGuid: activeLink.groupGuid}});
   };
 
   return (

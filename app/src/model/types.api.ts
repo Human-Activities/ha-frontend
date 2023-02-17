@@ -34,7 +34,7 @@ export type Register = {
 }
 
 export type Group = {
-    guid: string;
+    groupGuid: string;
     name: string;
     description?: string;
 }
@@ -77,6 +77,8 @@ export enum TaskPriority {
 
 export type TodoListTemplate = {
     toDoListGuid: string;
+    groupGuid?: string;
+    userGuid?: string;
     name: string;
     createdDate: string;
     toDoListType: ToDoListType;
