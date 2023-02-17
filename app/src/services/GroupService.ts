@@ -7,7 +7,7 @@ export class GroupService {
     static async create(group: Group) {
         try {
             const { data } = await axios.post(`${ApiURL}groups/create`, group);
-            return data
+            return data as Group;
         } catch (error) {
             return null;
         }
@@ -29,6 +29,6 @@ export class GroupService {
         }
     }
     static async getGroupLink(groupGuid?: string) {
-        
+
     }
 }
