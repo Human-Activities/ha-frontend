@@ -6,7 +6,7 @@ import { AppContext, AppContextType } from "../../context";
 import { useNavigate } from "react-router-dom";
 
 const AppHeader: React.FC = () => {
-    const {appData, setCurrentState} = React.useContext(AppContext) as AppContextType;
+    const {appData, setCurrentState, logout, user: { accessToken }} = React.useContext(AppContext) as AppContextType;
     const navigate = useNavigate();
 
     const extendedMenu = () => {
@@ -29,7 +29,7 @@ const AppHeader: React.FC = () => {
             <div className="logo">Human Activities - plan your life</div>
             <div style={{gap: '.5em'}} className="ha-h-flexbox">
                 {extendedMenu()}
-                <HaButton style={{color: 'white'}} type="text">Dark mode</HaButton>
+                {accessToken && <HaButton onClick={() => logout()} style={{color: 'white'}} type="text">Logout</HaButton>}
             </div>
         </Header>
     )

@@ -25,7 +25,6 @@ const defaultTabs: TabItem<FinancesTabType>[] = [
     },
 ];
 
-
 export const FinancesPage = () => {
     const { t } = useTranslation("finances");
     const { groupGuid } = useParams();
@@ -52,7 +51,7 @@ export const FinancesPage = () => {
 
     const fetchBills = useCallback(async (key: FinancesTabType) => {
         if(key === "user") {
-            const bills = await getUserBills(userGuid);
+            const bills = await getUserBills();
             setBills(bills);
         } else {
             if (groupGuid) {

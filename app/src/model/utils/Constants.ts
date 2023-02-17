@@ -11,3 +11,4 @@ export enum RequestStatus {
 
 export const submenuKeys = ["activities", "todo-lists", "finances", "events"];
 
+export const ApiURL =  "https://localhost:7124/api/";

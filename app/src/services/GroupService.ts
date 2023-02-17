@@ -1,14 +1,12 @@
 import axios from "axios";
 import { Group } from "../model/types.api";
-import { RequestStatus } from "../model/utils";
-
-const apiUrl = 'https://localhost:7124/api/group';
+import { ApiURL, RequestStatus } from "../model/utils";
 
 export class GroupService {
     
     static async create(group: Group) {
         try {
-            const { data } = await axios.post(`${apiUrl}/create`, group);
+            const { data } = await axios.post(`${ApiURL}group/create`, group);
             return {status: RequestStatus.SUCCESS, data}
         } catch (error) {
             return {status: RequestStatus.ERROR, error}
@@ -16,7 +14,7 @@ export class GroupService {
     }
     static async getGroups() {
         try {
-            const { data } = await axios.get(`${apiUrl}/get`);
+            const { data } = await axios.get(`${ApiURL}group/get`);
             return {status: RequestStatus.SUCCESS, data: data as Group[]}
         } catch (error) {
             return {status: RequestStatus.ERROR, error}

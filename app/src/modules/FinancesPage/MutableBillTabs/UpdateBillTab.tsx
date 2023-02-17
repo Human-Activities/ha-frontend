@@ -17,7 +17,7 @@ export const UpdateBillTab = ({ billReference, closeTab }: Props) => {
         userGuid: billReference.userGuid,
         billGuid: billReference.guid, 
         items: billReference.items.map((item, i) => 
-            ({ number: (i+1), name: item.name, price: item.price, categoryGuid: item.category.guid, userGuid: item.author.userGuid })), 
+            ({ number: (i+1), name: item.name, price: item.price, categoryId: item.category.id, userGuid: item.author.userGuid })), 
         name: billReference.name 
     });
 

@@ -18,11 +18,13 @@ export const CreateBillForm = <T extends BillFormValues, >({ bill, updateBill }:
 
     useEffect(() => {
         updateBill(values);
-    }, [values])
+    }, [values, values.name, values.items])
 
     const addItem = useCallback(() => {
-        const i = (values.items?.length ?? 0) + 1;
-        setValues({...values, items: [...values.items, { number: i, userGuid } as CreateBillItem]});
+        setValues(prevState => {
+            const i = (values.items?.length ?? 0) + 1;
+            return {...prevState, items: [...values.items, { number: i, userGuid }]}
+        });
     }, [values.items, setValues]);
     
     const removeItem = useCallback((item: CreateBillItem) => {

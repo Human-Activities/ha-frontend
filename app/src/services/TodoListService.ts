@@ -1,11 +1,11 @@
 import axios from "axios";
 import { TodoListTemplate, ToDoListType } from "../model/types.api";
-import { RequestStatus } from "../model/utils";
+import { ApiURL, RequestStatus } from "../model/utils";
 
 export class TodoListService {
     public static async getTodoLists(guid?: string): Promise<TodoListTemplate[] | null> {
         try {
-            const { data } = await axios.get(`https://localhost:7124/api/todolists/get-all/${guid ? guid : ''}`);
+            const { data } = await axios.get(`${ApiURL}todolists/get-all/${guid ? guid : ''}`);
             return data as TodoListTemplate[];
         } catch(err: any) {
             return null;
@@ -14,7 +14,7 @@ export class TodoListService {
 
     public static async setFavorite(guid: string, favorite: boolean): Promise<RequestStatus> {
         try {
-            await axios.put('https://localhost:7124/api/todolists/set-favourite', {toDoListGuid: guid, isFavorite: favorite});
+            await axios.put(`${ApiURL}todolists/set-favourite`, {toDoListGuid: guid, isFavorite: favorite});
             return RequestStatus.SUCCESS;
         } catch (err) {
             return RequestStatus.ERROR;
@@ -23,7 +23,7 @@ export class TodoListService {
 
     public static async getTemplates(guid?: string): Promise<TodoListTemplate[] | null> {
         try {
-            const { data } = await axios.get(`https://localhost:7124/api/todolists/get-templates/${guid ? guid : ''}`);
+            const { data } = await axios.get(`${ApiURL}todolists/get-templates/${guid ? guid : ''}`);
             return data as TodoListTemplate[];
         } catch (err) {
             return null;
@@ -32,7 +32,7 @@ export class TodoListService {
 
     public static async setTemplate(guid: string, toDoListType: ToDoListType): Promise<RequestStatus> {
         try {
-            await axios.put('https://localhost:7124/api/todolists/set-template', {todoListGuid: guid, toDoListType: toDoListType});
+            await axios.put(`${ApiURL}todolists/set-template`, {todoListGuid: guid, toDoListType: toDoListType});
             return RequestStatus.SUCCESS
         } catch(err) {
             return RequestStatus.ERROR;
@@ -41,7 +41,7 @@ export class TodoListService {
 
     public static async createTodoList(todoList: TodoListTemplate): Promise<TodoListTemplate | null> {
         try {
-            const {data} = await axios.post('https://localhost:7124/api/todolists/create', todoList);
+            const {data} = await axios.post(`${ApiURL}todolists/create`, todoList);
             return data as TodoListTemplate;
         } catch(err) {
             return null;
@@ -50,7 +50,7 @@ export class TodoListService {
 
     public static async updateTodoList(todoList: TodoListTemplate) {
         try {
-            const {data} = await axios.put('https://localhost:7124/api/todolists/edit', todoList);
+            const {data} = await axios.put(`${ApiURL}todolists/edit`, todoList);
             return data as TodoListTemplate;
         } catch(err) {
             return null;
@@ -59,7 +59,7 @@ export class TodoListService {
 
     public static async deleteTodoList(guid: string) {
         try {
-            await axios.delete(`https://localhost:7124/api/todolists/delete/${guid}`);
+            await axios.delete(`${ApiURL}todolists/delete/${guid}`);
             return RequestStatus.SUCCESS;
         } catch (err) {
             return RequestStatus.ERROR;
@@ -68,7 +68,7 @@ export class TodoListService {
 
     public static async getTodoList(guid: string): Promise<TodoListTemplate | null> {
         try {
-            const { data } = await axios.get(`https://localhost:7124/api/todolists/get/${guid}`);
+            const { data } = await axios.get(`${ApiURL}todolists/get/${guid}`);
             return data as TodoListTemplate;
         } catch(err) {
             return null;

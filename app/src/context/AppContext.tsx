@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
-import { Navigate, useLocation, useNavigate } from "react-router-dom";
-import { notify, PathManager, RequestStatus } from "../model/utils";
+import { useLocation, useNavigate } from "react-router-dom";
+import { ApiURL, notify, PathManager, RequestStatus } from "../model/utils";
 import axios, { AxiosRequestConfig } from "axios";
 import { ActivityCategory, BillItemCategory, Login, Register } from "../model/types.api";
 import { AuthService } from "../services";
@@ -13,13 +13,6 @@ export interface AppData {
     activityCategories: ActivityCategory[];
     billItemCategories: BillItemCategory[];
 }
-
-// class UserData {
-//     //todo: logged user guid is required to be accessed everywhere...
-//     userGuid = localStorage.getItem("userGuid");
-//     accessToken = localStorage.getItem("accessToken");
-//     refreshToken = localStorage.getItem("refreshToken");
-// };
 
 export type UserData = {
     userGuid: string;
@@ -35,14 +28,12 @@ export type AppContextType = {
     setLocale: (value: string) => void;
     register: (registerTO: Register) => Promise<{status: RequestStatus}>;
     login: (loginTO: Login) => Promise<{status: RequestStatus}>;
+    logout: () => void;
 }
 
 type AppContextProps = {
     children?: React.ReactNode;
 }
-
- //const userData = new UserData();
-// const userData: UserData = { accessToken: localStorage.getItem("accessToken"), refreshToken: localStorage.getItem("refreshToken"), userGuid: localStorage.getItem("userGuid")}
 
 const AppContext = React.createContext<AppContextType | null>(null);
 
@@ -50,6 +41,10 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     const location = useLocation();
     const navigate = useNavigate();
     const { i18n } = useTranslation();
+
+    useEffect(() => {
+        axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem("accessToken")}`;
+    })
 
     useEffect(() => {
         const currentPath = PathManager.getCurrentStateByPath();
@@ -63,8 +58,6 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         billItemCategories: [],
     });
 
-    //const [user, setUserData] = useState<UserData>();
-
     const setCurrentState = (value: string) => {
         setAppData((prev) => ({...prev, currentState: value}));
     }
@@ -77,7 +70,16 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         i18n.changeLanguage(value);
     }
 
-    const getUserFromLocalStorage = (): UserData => {
+    const getAppData = useCallback((): AppData => {
+        const appdata = localStorage.getItem("appData");
+        if (appdata) {
+            const newAppData: AppData = JSON.parse(appdata);
+            return newAppData;
+        }
+        return {} as AppData;
+    }, [])
+
+    const getUserFromLocalStorage = useCallback((): UserData => {
         const accessToken = localStorage.getItem("accessToken");
         const refreshToken = localStorage.getItem("refreshToken");
         const userGuid = localStorage.getItem("userGuid");
@@ -88,18 +90,18 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         }
 
         return { accessToken, refreshToken, userGuid }
-    }
+    }, []);
 
-    const getCommonData = async () => {
+    const setCommonData = async () => {
         try {
             const activityCategories = await getActivityCategories();
             const billItemCategories = await getBillItemCategories();
 
             setAppData((prevData) => ({...prevData, activityCategories, billItemCategories}));
+            localStorage.setItem("appData", JSON.stringify(appData));
         } catch(error) {
             notify('error', 'Error', (error as any).message);
         }
-        
     }
 
     const register = useCallback(async (registerTO: Register) => {
@@ -112,18 +114,23 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         return { status };
     },[]);
 
+    const logout = useCallback(() => {
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('refreshToken');
+        localStorage.removeItem('userGuid');
+        localStorage.removeItem('appData');
+
+        navigate("/login");
+    }, [])
+
     const login = useCallback(async (loginTO: Login) => {
         const { status, data, err } = await AuthService.login(loginTO);
         if (status === RequestStatus.SUCCESS) {
             localStorage.setItem('accessToken', data.accessToken);
             localStorage.setItem('refreshToken', data.refreshToken);
-            // todo: check what backend response is like
-            //localStorage.setItem('userGuid', data.userGuid);
-            // temp for testing
-            localStorage.setItem('userGuid', "63ef1ebe-2e40-4818-ad4c-69e5d2885da9");
+            localStorage.setItem('userGuid', data.userGuid);
             axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
-            //await getCommonData();
-            //setUserData(getUserFromLocalStorage());
+            await setCommonData();
             notify('success', 'Login successful', 'Successfully logged in');
             return { status }
         }
@@ -132,43 +139,41 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
     }, []);
 
     const refreshToken = useCallback(async () => {
-        const refreshTonekURL = "todo"
-        const { data } = await axios.post(refreshTonekURL);
+        const refreshTokenURL = `${ApiURL}authentication/refresh`;
+        const { data } = await axios.post(refreshTokenURL, {refreshToken: localStorage.getItem("refreshToken")});
         localStorage.setItem("accessToken", data.accessToken);
         localStorage.setItem("refreshToken", data.refreshToken);
-        return false;
+        return data;
       }, []);
 
-    // useMemo(() => {
-    //     //axios.defaults.headers.common.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
+    useMemo(() => {   
+        axios.interceptors.request.use((config): AxiosRequestConfig => {
+          config.withCredentials = true;
+          if(config.headers){
+            config.headers = {
+                Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+            };
+          }
+          return config;
+        });
     
-    //     axios.interceptors.request.use((config): AxiosRequestConfig => {
-    //       config.withCredentials = true;
-    //       if(config.headers){
-    //         config.headers = {
-    //             Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-    //         };
-    //       }
-    //       return config;
-    //     });
-    
-    //     axios.interceptors.response.use((response)=> response, async error => {
-    //       const request = error.config;
-    //       if(error.response.status === 400 && request?.url?.includes("TODO")){
-    //         // todo logout 
-    //         return;
-    //       }
-    //       if(error.response.status === 401) {
-    //         const result = await refreshToken();
-    //         if(result){
-    //           request.headers.Authorization = `Bearer ${localStorage.getItem('accessToken')}`;
-    //           return axios(request)
-    //         }
-    //       }
-    //     });
-    //   }, []);
+        axios.interceptors.response.use((response)=> response, async error => {
+          const request = error.config;
+          if(error?.response?.status === 400 && request?.url?.includes("/api/authentication/refresh")){
+            logout(); 
+            return;
+          }
+          if(error?.response?.status === 401) {
+            const result = await refreshToken();
+            if(result){
+              request.headers.Authorization = `Bearer ${result.accessToken}`;
+              return axios(request)
+            }
+          }
+        });
+      }, []);
 
-    return <AppContext.Provider value={{appData, user: getUserFromLocalStorage(), setCurrentState, setTheme, setLocale, register, login}}>
+    return <AppContext.Provider value={{appData: getAppData(), user: getUserFromLocalStorage(), setCurrentState, setTheme, setLocale, register, login, logout}}>
             {children}
         </AppContext.Provider>
 }

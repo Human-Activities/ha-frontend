@@ -2,6 +2,7 @@
 import { useCallback } from "react";
 import { HaButton } from "../../../components";
 import { BillFormValues, CreateBillValues, UpdateBillValues } from "../../../model/types.app";
+import { notify } from "../../../model/utils";
 import { createBill, updateBill } from "../../../services/finances";
 import "./CreateUpdateBill.scss";
 
@@ -16,7 +17,7 @@ export type BillFormConsumerProps<T extends BillFormValues> = {
     onClose: () => void;
 }
 
-const BillFormConsumer = ({ onSubmit, onCancel, submitLabel }: Props) => {
+export const BillFormConsumer = ({ onSubmit, onCancel, submitLabel }: Props) => {
     return (
         <div className="bill-consumer-actions">
             <HaButton onClick={() => onCancel()}>Cancel</HaButton>
@@ -30,10 +31,15 @@ export const CreateBillFormConsumer = ({bill, onClose}: BillFormConsumerProps<Cr
         if(bill.name && bill.name.length) {
             const items = bill.items.filter(item => item.name === null || item.name === "" || item.price === null);
             if (items.length) {
-                await createBill(bill);
+                try {
+                    await createBill(bill);
+                    notify('success', 'Success', 'Bill created')
+                } catch (err) {
+                    notify('error', 'Error', (err as any).message);
+                }
             }
         }
-    }, [])
+    }, [bill]);
 
     return (
         <BillFormConsumer onSubmit={submitBill} onCancel={onClose} submitLabel={"Create"} />
@@ -45,10 +51,15 @@ export const UpdateBillFormConsumer = ({bill, onClose}: BillFormConsumerProps<Up
         if(bill.name && bill.name.length) {
             const items = bill.items.filter(item => item.name === null || item.name === "" || item.price === null);
             if (items.length) {
-                await updateBill(bill);
+                try {
+                    await updateBill(bill);
+                    notify('success', 'Success', 'Bill updated')
+                } catch (err) {
+                    notify('error', 'Error', (err as any).message);
+                }
             }
         }
-    }, [])
+    }, [bill]);
 
     return (
         <BillFormConsumer onSubmit={submitBill} onCancel={onClose} submitLabel={"Update"} />
