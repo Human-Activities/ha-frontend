@@ -2,14 +2,15 @@ import { SubmenuElement } from "../../components/HaMenu/SideMenu";
 import { Group } from "../types.api";
 
 export type SubMenuLink = {
-  key: string | number;
+  key: string;
   name: string;
   path: string;
   active?: boolean;
+  groupGuid?: string;
 };
 
 export type MenuItem = {
-  key: string | number;
+  key: string;
   name: string;
   active?: boolean;
   submenuList?: SubMenuLink[];
@@ -24,7 +25,8 @@ const generateSubMenu = (menuItems: SubmenuElement[], groupId?: string): SubMenu
   return menuItems.map((item) => ({
     key: `${item.key}-${groupId}`,
     name: item.name,
-    path: `/${groupId?.length ? "groups/" : ""}${item.key}`,
+    groupGuid: groupId,
+    path: `/${groupId?.length ? `groups/${groupId}/` : ""}${item.key}`,
   }));
 };
 
@@ -41,9 +43,9 @@ export class MenuUtils {
 
     groups.forEach((g) =>
       provider.push({ 
-        key: `${defaultKey}-${g.guid}`, 
+        key: `${defaultKey}-${g.groupGuid}`, 
         name: g.name, 
-        submenuList: generateSubMenu(submenuList, g.guid) 
+        submenuList: generateSubMenu(submenuList, g.groupGuid) 
       })
     );
 
@@ -60,7 +62,10 @@ export class MenuUtils {
   }
 
   public static findSubMenuLinkInPath(links: SubMenuLink[], path: string): SubMenuLink | undefined {
-    const item = links.find((l) => path.includes(l.path));
+    const item = links.find((l) => {
+      const sliced = path.replace('/add','');
+      return sliced === l.path;
+    });
     return item;
   }
 }

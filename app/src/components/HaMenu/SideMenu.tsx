@@ -50,21 +50,20 @@ export const SideMenu = ({ onExpand }: SideMenuProps) => {
   });
 
   const getGroups = useCallback(async () => {
-    const { status, data, error } = await GroupService.getGroups();
-    if (status === RequestStatus.SUCCESS) {
-      setGroups(data || []);
-    }
+    const result = await GroupService.getGroups();
+    return result;
   }, []);
 
   useEffect(() => {
-    getGroups();
-
-    const submenu = submenuKeys.map<SubmenuElement>((key) => {
-      const name = t(`submenu.${key}`);
-      return { key, name };
-    });
-    const menu = MenuUtils.generateMenuProviderForPanel(groups, submenu, () => showAddGroupModal());
-    setMenuProvider(menu);
+    getGroups().then(val =>
+      {
+        const submenu = submenuKeys.map<SubmenuElement>((key) => {
+          const name = t(`submenu.${key}`);
+          return { key, name };
+        });
+        const menu = MenuUtils.generateMenuProviderForPanel(val, submenu, () => showAddGroupModal());
+        setMenuProvider(menu);
+  });
   }, [t, getGroups]);
 
   return (

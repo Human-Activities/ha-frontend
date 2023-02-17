@@ -9,6 +9,6 @@ export enum RequestStatus {
   ERROR = "error",
 }
 
-export const submenuKeys = ["activities", "todo-lists", "finances", "events"];
+export const submenuKeys = ["activities", "todo-lists", "finances"];
 
 export const ApiURL =  "https://localhost:7124/api/";

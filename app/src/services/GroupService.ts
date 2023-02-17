@@ -7,17 +7,17 @@ export class GroupService {
     static async create(group: Group) {
         try {
             const { data } = await axios.post(`${ApiURL}group/create`, group);
-            return {status: RequestStatus.SUCCESS, data}
+            return data
         } catch (error) {
-            return {status: RequestStatus.ERROR, error}
+            return null;
         }
     }
     static async getGroups() {
         try {
             const { data } = await axios.get(`${ApiURL}group/get`);
-            return {status: RequestStatus.SUCCESS, data: data as Group[]}
+            return data as Group[]
         } catch (error) {
-            return {status: RequestStatus.ERROR, error}
+            return [];
         }
     }
 }

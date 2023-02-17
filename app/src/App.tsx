@@ -24,7 +24,9 @@ function App() {
               <Route path='/activities' element={<ActivitiesPage />} />
               <Route path='/finances' element={<FinancesPage />} />
               <Route path='/todo-lists' element={<TodoListPage/>} />
+              <Route path='/groups/:groupGuid/todo-lists' element={<TodoListPage/>} />
               <Route path='/todo-lists/add' element={<TodoListForm/>}/>
+              <Route path='/groups/:groupGuid/todo-lists/add' element={<TodoListForm/>}/>
               <Route path='/' element={<StartingPage/>} />
             </Routes>
           <Footer className='main-footer'>&copy; Human Activities</Footer>
