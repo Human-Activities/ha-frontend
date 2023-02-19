@@ -6,6 +6,7 @@ import { ActivityCategory, BillItemCategory, Login, Register } from "../model/ty
 import { AuthService } from "../services";
 import { useTranslation } from "react-i18next";
 import { getActivityCategories, getBillItemCategories } from "../services/categories";
+import { googleLogout } from "@react-oauth/google";
 
 export interface AppData {
     currentState: string;
@@ -28,6 +29,7 @@ export type AppContextType = {
     setLocale: (value: string) => void;
     register: (registerTO: Register) => Promise<{status: RequestStatus}>;
     login: (loginTO: Login) => Promise<{status: RequestStatus}>;
+    loginWithGoogle: (credential: string) => Promise<{status: RequestStatus}>
     logout: () => void;
 }
 
@@ -116,7 +118,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
 
     const logout = useCallback(() => {
         navigate("/login");
-
+        googleLogout();
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('userGuid');
@@ -132,6 +134,22 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
             localStorage.setItem('userGuid', data.userGuid);
             axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
             await setCommonData();
+            notify('success', 'Login successful', 'Successfully logged in');
+            return { status }
+        }
+        notify('error', 'Error', (err as any).message);
+        return { status };
+    }, []);
+
+    const loginWithGoogle = useCallback(async (credential: string) => {
+        const { status, data, err } = await AuthService.loginWithGoogle(credential);
+        if (status === RequestStatus.SUCCESS) {
+            localStorage.setItem('accessToken', data.accessToken);
+            localStorage.setItem('refreshToken', data.refreshToken);
+            localStorage.setItem('userGuid', data.userGuid);
+            axios.defaults.headers.common.Authorization = `Bearer ${data.accessToken}`;
+            await setCommonData();
+            navigate("/panel");
             notify('success', 'Login successful', 'Successfully logged in');
             return { status }
         }
@@ -174,7 +192,7 @@ const AppContextProvider: React.FC<AppContextProps> = ({children}) => {
         });
       }, []);
 
-    return <AppContext.Provider value={{appData: getAppData(), user: getUserFromLocalStorage(), setCurrentState, setTheme, setLocale, register, login, logout}}>
+    return <AppContext.Provider value={{appData: getAppData(), user: getUserFromLocalStorage(), setCurrentState, setTheme, setLocale, register, login, loginWithGoogle, logout}}>
             {children}
         </AppContext.Provider>
 }

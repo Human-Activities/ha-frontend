@@ -1,10 +1,11 @@
+import { CredentialResponse } from "@react-oauth/google";
 import { Tabs } from "antd";
 import {Dayjs} from "dayjs";
 import React, {useState} from "react";
 import { useNavigate } from "react-router-dom";
 import { AppContext, AppContextType } from "../../context";
 import { Login, Register } from "../../model/types.api";
-import { DateUtils, RequestStatus } from "../../model/utils";
+import { DateUtils, notify, RequestStatus } from "../../model/utils";
 import LoginForm from "./LoginForm";
 import './LoginPage.scss';
 
@@ -28,6 +29,7 @@ const LoginPage: React.FC = () => {
             navigate('/panel');
         }
     }
+    
     const tabsDef = [
         {
             label: 'Register',
